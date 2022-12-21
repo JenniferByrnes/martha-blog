@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  src: local("JosefinSans"),
+  url("./assets/fonts/Josefin_Sans/static/JosefinSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  font-weight: 600;
+  src: local("JosefinSans"),
+  url("./assets/fonts/Josefin_Sans/static/JosefinSans-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  font-weight: 900;
+  src: local("JosefinSans"),
+  url("./assets/fonts/Josefin_Sans/static/JosefinSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  font-weight: 300;
+  font-style: italic;
+  src: local("JosefinSans"),
+  url("./assets/fonts/Josefin_Sans/static/JosefinSans-LightItalic.ttf");
+}
+
+/* These two sections make a sticky footer */
+#page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+section {
+  flex: 1;
+}
+
+
+/* Form fields are used on the Contact, Login, and SignUp forms */
+.form-container {
+  @apply w-full bg-stone-50 border-8 border-pcGreen border-double shadow-lg shadow-pcGreen md:mt-0 xl:p-0 items-center justify-center;
+}
+
+.form-inner-container {
+  @apply p-6 space-y-4 md:space-y-6 sm:p-8 items-center justify-center;
+}
+
+.form-field {
+  @apply bg-gray-50 border-2 border-pcGreen hover:shadow-lg w-full p-3
+}
+
+.form-button {
+  @apply text-center w-full md:py-2 shadow-md shadow-pcGreen text-lg border-8 border-double border-pcGreen hover:bg-pcGreen hover:shadow-lg 
+}
