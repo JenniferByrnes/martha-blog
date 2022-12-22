@@ -53,6 +53,7 @@ export default function SignUp() {
       // Update the Firestore database
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
 
+      // All is well - go to homepage
       navigate('/')
     } catch (error) {
       toast.error('Something went wrong with registration')
