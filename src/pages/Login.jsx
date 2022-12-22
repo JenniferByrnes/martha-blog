@@ -28,14 +28,17 @@ export default function Login() {
     e.preventDefault()
 
     try {
+      // Get token
       const auth = getAuth()
 
+      // sign in function htmlFor Auth
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       )
 
+      // If success, navigate home
       if (userCredential.user) {
         navigate('/')
       }
@@ -61,7 +64,7 @@ export default function Login() {
               </h1>
               <form className="space-y-4 md:space-y-6 " onSubmit={onSubmit}>
                 <div>
-                  <label for="email" className="block mb-2 text-sm font-medium ">Email</label>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium ">Email</label>
                   <input
                     type='email'
                     className='form-field  mb-4 focus: outline-pcGreen'
@@ -72,7 +75,7 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <label for="password" className="block mb-2 text-sm font-medium ">Password</label>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium ">Password</label>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     className='form-field  mb-4 focus: outline-pcGreen'

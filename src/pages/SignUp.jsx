@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 //import OAuth from '../components/OAuth'
+import { db } from '../firebase.config.js'
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import image from '../assets/images/BurfordTogether.jpeg'
@@ -29,19 +31,31 @@ export default function SignUp() {
     e.preventDefault()
 
     try {
+      // Create token
       const auth = getAuth()
 
-      const userCredential = await signInWithEmailAndPassword(
+      // Save authorization in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       )
+      const user = userCredential.user
 
-      if (userCredential.user) {
-        navigate('/')
-      }
+      // Update user's profile in auth
+      updateProfile(auth.currentUser, { displayName: username })
+
+      // Prepare to create Firestore record
+      const formDataCopy = { ...formData }
+      delete formDataCopy.password
+      formDataCopy.timestamp = serverTimestamp()
+
+      // Update the Firestore database
+      await setDoc(doc(db, 'users', user.uid), formDataCopy)
+
+      navigate('/')
     } catch (error) {
-      toast.error('Bad User Credentials')
+      toast.error('Something went wrong with registration')
     }
   }
 
@@ -61,8 +75,8 @@ export default function SignUp() {
                 No need to sign up to read.
               </h1>
               <form className="space-y-4 md:space-y-6 " onSubmit={onSubmit}>
-              <div>
-                  <label for="username" className="block mb-2 text-sm font-medium ">Name</label>
+                <div>
+                  <label htmlFor="username" className="block mb-2 text-sm font-medium ">Name</label>
                   <input
                     type='username'
                     className='form-field  mb-4 focus: outline-pcGreen'
@@ -72,7 +86,7 @@ export default function SignUp() {
                   />
                 </div>
                 <div>
-                  <label for="email" className="block mb-2 text-sm font-medium ">Email</label>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium ">Email</label>
                   <input
                     type='email'
                     className='form-field  mb-4 focus: outline-pcGreen'
@@ -83,7 +97,7 @@ export default function SignUp() {
                 </div>
 
                 <div>
-                  <label for="password" className="block mb-2 text-sm font-medium ">Password</label>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium ">Password</label>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     className='form-field  mb-4 focus: outline-pcGreen'
@@ -102,16 +116,10 @@ export default function SignUp() {
 
                 <div className="flex items-center justify-evenly space-x-2">
 
-                <button type="submit" className="form-button">Submit</button>
+                  <button type="submit" className="form-button">Submit</button>
 
-                <button type="submit" className="form-button"><Link to="/login">Login instead?</Link></button>
-              </div>
-                {/* <div className='signInBar'>
-                  <p className='signInText'>Sign In</p>
-                  <button className='signInButton'>
-                    <ArrowRightIcon fill='#ffffff' width='34px' height='34px' />
-                  </button>
-                </div> */}
+                  <button type="submit" className="form-button"><Link to="/login">Login instead?</Link></button>
+                </div>
               </form>
 
               {/* <OAuth /> */}
