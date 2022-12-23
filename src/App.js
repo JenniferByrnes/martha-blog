@@ -1,10 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Blog from './pages/Blog'
 import EditBlog from './pages/EditBlog'
 import ForgotPassword from './pages/ForgotPassword'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
+import PrivateRoute from './components/PrivateRoute'
 import Photos from './pages/Photos'
 import SignUp from './pages/SignUp'
 
@@ -21,11 +24,16 @@ function App() {
           <Route path='/blog' element={<Blog />} />
           <Route path='/edit-blog' element={<EditBlog />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
+          {/* Nested route to direct based on Auth status */}
+          <Route path='/profile' element={<PrivateRoute />}>
+            <Route path='/profile' element={<Profile />} />
+          </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/photos' element={<Photos />} />
           <Route path='/sign-up' element={<SignUp />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </>
   );
 }
