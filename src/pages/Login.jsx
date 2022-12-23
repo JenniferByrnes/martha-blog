@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-//import OAuth from '../components/OAuth'
-import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import image from '../assets/images/BurfordLove.jpeg'
 
@@ -78,7 +76,7 @@ export default function Login() {
                   <label htmlFor="password" className="block mb-2 text-sm font-medium ">Password</label>
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    className='form-field  mb-4 focus: outline-pcGreen'
+                    className='form-field mb-4 focus: outline-pcGreen'
                     placeholder='........'
                     id='password'
                     value={password}
@@ -87,21 +85,20 @@ export default function Login() {
                   <img
                     src={visibilityIcon}
                     alt='show password'
-                    className='showPassword'
                     onClick={() => setShowPassword((prevState) => !prevState)}
                   />
                 </div>
 
-                <Link to='/forgot-password' className='forgotPasswordLink'>
+                <Link to='/forgot-password' className='bg-pcGreen'>
                   Forgot Password
                 </Link>
 
                 <div className="flex items-center justify-evenly space-x-2">
 
-                <button type="submit" className="form-button">Submit</button>
+                  <button type="submit" className="form-button">Submit</button>
 
-                <button type="submit" className="form-button"><Link to="/sign-up">Sign Up?</Link></button>
-              </div>
+                  <button type="submit" className="form-button"><Link to="/sign-up">Sign Up?</Link></button>
+                </div>
                 {/* <div className='signInBar'>
                   <p className='signInText'>Sign In</p>
                   <button className='signInButton'>

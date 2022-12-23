@@ -1,8 +1,9 @@
-import { getAuth } from 'firebase/auth'
+import { getAuth, updateProfile } from 'firebase/auth'
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { updateDoc } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
+import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase.config'
+import { toast } from 'react-toastify'
 
 
 export default function Profile() {
@@ -23,8 +24,25 @@ export default function Profile() {
     navigate('/')
   }
 
-  const onSubmit = () => {
-    console.log(123)
+  const onSubmit = async () => {
+    try {
+      if (auth.currentUser.displayName !== username) {
+        //Update display name in Firebase
+        await updateProfile(auth.currentUser, {
+          displayName: username
+        })
+        // Update in Firestore
+        const userRef = doc(db, 'users', auth.currentUser.uid)
+        await updateDoc(userRef, {
+          name: username
+        })
+
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error('Could not update profile details')
+
+    }
   }
 
   const onChange = (e) => {
@@ -34,34 +52,62 @@ export default function Profile() {
     }))
   }
 
-  return <div>
-    <header>
-      <p>My Profile</p>
-      <button type='button'
-        onClick={onLogout}>Logout </button>
-    </header>
-    <main>
-      <div>
-        <p className="profileDetailsText">Personal Details</p>
-        <p onClick={() => {
-          changeDetails && onSubmit()
-          setChangeDetails((prevState) => !prevState)
-        }}>
-          {changeDetails ? 'done' : 'change'}
-        </p>
+  // const onDelete = async (listingId) => {
+  //   if (window.confirm('Are you sure you want to delete?')) {
+  //     await deleteDoc(doc(db, 'listings', listingId))
+  //     const updatedListings = listings.filter(
+  //       (listing) => listing.id !== listingId
+  //     )
+  //     setListings(updatedListings)
+  //     toast.success('Successfully deleted listing')
+  //   }
+  // }
 
-      </div>
-      <div>
-        <form action="">
-          <input type="text"
-            id='username'
-            className={!changeDetails ? 'profileName' : 'profileNameActive'}
-            disabled={!changeDetails}
-            value={username}
-            onChange={onChange}
-          />
-        </form>
-      </div>
-    </main>
-  </div>
+  // const onEdit = (listingId) => navigate(`/edit-listing/${listingId}`)
+
+  return (
+    <section className="flex flex-col items-center justify-center px-6 py-8 pt-[60px] mx-auto md:h-screen lg:py-0 text-stone-800">
+      <h1 className="flex items-center mb-6 text-3xl border-b-4 border-pcCoral">
+        <p>My Profile  </p>
+        <button type='button'
+          onClick={onLogout}>  Logout </button>
+      </h1>
+      <main
+        className="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:m-0"
+      >
+        <div className="form-container">
+          <div className="form-inner-container">
+              <h1 className="text-2xl">Personal Details</h1>
+            <div>
+              <form className="space-y-4 md:space-y-6 " action="">
+                <label htmlFor="username" className="block mb-2 text-sm font-medium ">Your username</label>
+                {/* Make text appear changeable when available */}
+                <input type="text"
+                  id='username'
+                  className={!changeDetails ? 'bg-pcGreen' : ''}
+                  disabled={!changeDetails}
+                  value={username}
+                  onChange={onChange}
+                />
+                <label htmlFor="email" className="block mb-2 text-sm font-medium ">Your email</label>
+                <input type="text"
+                  id='email'
+                  className='bg-pcGreen'
+                  disabled={!changeDetails}
+                  value={email}
+                  onChange={onChange}
+                />
+                <button type="submit" className="form-button" onClick={() => {
+                  changeDetails && onSubmit()
+                  setChangeDetails((prevState) => !prevState)
+                }}>
+                  {changeDetails ? 'Save' : 'Update'}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+  )
 }
