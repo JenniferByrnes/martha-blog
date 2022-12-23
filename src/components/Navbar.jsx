@@ -42,8 +42,11 @@ export default function Navbar() {
             <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
               <NavLink to="/blog">Blog</NavLink>
             </li>
+            <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
+              <NavLink to="/profile">Profile</NavLink>
+            </li>
             {false ? (
-                          // {Auth.loggedIn() ? (
+              // {Auth.loggedIn() ? (
               <>
                 <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                   {/* <NavLink to="/profile">My Posts</NavLink> */}
@@ -96,10 +99,12 @@ export default function Navbar() {
             <NavLink to="/photos"
               className="hover:text-pcCoral hover:text-xl"
             >Photos</NavLink>
-            <NavLink to="/blog"               className="hover:text-pcCoral hover:text-xl" >Blog</NavLink>
+            <NavLink to="/blog" className="hover:text-pcCoral hover:text-xl" >Blog</NavLink>
+            <NavLink to="/profile" className="hover:text-pcCoral hover:border-b hover:border-pcCoral">Profile</NavLink>
+
             {/* Logged in user sees Logout option, otherwise Login/Signin option */}
             {false ? (
-                          // {Auth.loggedIn() ? (
+              // {Auth.loggedIn() ? (
               <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                 {/* <NavLink to="/profile">My Posts</NavLink> */}
                 <NavLink to="/" onClick={logout}>
