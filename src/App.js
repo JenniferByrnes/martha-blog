@@ -6,6 +6,7 @@ import EditBlog from './pages/EditBlog'
 import ForgotPassword from './pages/ForgotPassword'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import Photos from './pages/Photos'
 import SignUp from './pages/SignUp'
 
@@ -22,6 +23,7 @@ function App() {
           <Route path='/blog' element={<Blog />} />
           <Route path='/edit-blog' element={<EditBlog />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path='/login' element={<Login />} />
           <Route path='/photos' element={<Photos />} />
           <Route path='/sign-up' element={<SignUp />} />

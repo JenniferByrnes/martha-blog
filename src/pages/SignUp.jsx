@@ -43,7 +43,8 @@ export default function SignUp() {
       const user = userCredential.user
 
       // Update user's profile in auth
-      updateProfile(auth.currentUser, { displayName: username })
+      updateProfile(auth.currentUser, { 
+        displayName: username })
 
       // Prepare to create Firestore record
       const formDataCopy = { ...formData }
