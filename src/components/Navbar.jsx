@@ -23,7 +23,7 @@ export default function Navbar() {
   return (
     <header className="w-full bg-stone-200 text-black">
       {/* Container for Nav elements - title and nav */}
-      <nav className="container flex justify-between md:items-center max-w-6xl mx-auto px-6 py-1">
+      <nav className="container flex justify-between md:items-center max-w-6xl mx-auto px-6 py-1 ">
         <>
           {/* title - link to home */}
           <NavLink to="/"
@@ -35,7 +35,7 @@ export default function Navbar() {
           {/* Nav Menu */}
           {/* Logged in user sees Logout option, otherwise Login/Signin option */}
 
-          <ul className="hidden md:flex md:space-x-5 items-center justify-around py-2">
+          <ul className="hidden md:flex md:space-x-5 items-center justify-around py-2" bg-blue-200>
             <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
               <NavLink to="/photos">Photos</NavLink>
             </li>
@@ -77,7 +77,7 @@ export default function Navbar() {
                 <span className="hamburger-middle"></span>
                 <span className="hamburger-bottom"></span>
               </button>
-            </div> : <div className="md:hidden">
+            </div> : <div>
               <button
                 id="menu-btn"
                 type="button"
@@ -88,36 +88,40 @@ export default function Navbar() {
                 <span className="hamburger-bottom"></span>
               </button>
             </div>}
-          </div>
+
 
           {/* Mobile Nav Menu */}
           <ul className={
             !nav
               ? "hidden"
-              : "top-0 bottom-0 left-0 flex flex-col py-2 text-lg  justify-evenly items-start"
+              : "top-0 bottom-0 left-0 flex flex-col py-2 text-lg  justify-evenly items-start "
           }>
-            <NavLink to="/photos"
+            <NavLink
               className="hover:text-pcCoral hover:text-xl"
-            >Photos</NavLink>
-            <NavLink to="/blog" className="hover:text-pcCoral hover:text-xl" >Blog</NavLink>
-            <NavLink to="/profile" className="hover:text-pcCoral hover:border-b hover:border-pcCoral">Profile</NavLink>
+              to="/photos">Photos</NavLink>
+            <NavLink className="hover:text-pcCoral hover:text-xl"
+              to="/blog" >Blog</NavLink>
+            <NavLink className="hover:text-pcCoral hover:border-b   hover:border-pcCoral"
+              to="/profile" >Profile</NavLink>
 
             {/* Logged in user sees Logout option, otherwise Login/Signin option */}
             {false ? (
               // {Auth.loggedIn() ? (
               <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                 {/* <NavLink to="/profile">My Posts</NavLink> */}
-                <NavLink to="/" onClick={logout}>
-                  Logout
+                <NavLink onClick={logout}
+                  to="/" >Logout
                 </NavLink>
               </li>
             ) : (
               <>
-                <NavLink to="/login" className="hover:text-pcCoral hover:text-xl" >Login</NavLink>
-                <NavLink to="/sign-up" className="hover:text-pcCoral hover:text-xl" >Sign Up</NavLink>
+                <NavLink className="hover:text-pcCoral hover:text-xl"
+                  to="/login" >Login</NavLink>
+                <NavLink className="hover:text-pcCoral hover:text-xl" to="/sign-up" >Sign Up</NavLink>
               </>
             )}
           </ul>
+          </div>
         </>
       </nav>
     </header>
