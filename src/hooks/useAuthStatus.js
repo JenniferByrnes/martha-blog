@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
+// Hook to see if user is logged in
 export const useAuthStatus = () => {
   const [loggedIn, setLoggedIn] = useState(false)
+  // this is like loading
   const [checkingStatus, setCheckingStatus] = useState(true)
   // Code around memory leak
   const isMounted = useRef(true)
@@ -11,6 +13,7 @@ export const useAuthStatus = () => {
     if (isMounted) {
       const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
+        // if an auth user is found, we are logged in and setCheckingStatus is set to false so that we can re-render
         if (user) {
           setLoggedIn(true)
         }

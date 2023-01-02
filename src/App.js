@@ -28,6 +28,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           {/* Nested route to direct based on Auth status */}
           <Route path='/profile' element={<PrivateRoute />}>
+            {/* This is the child element used by Outlet in Private Route */}
             <Route path='/profile' element={<Profile />} />
           </Route>
           <Route path='/login' element={<Login />} />
