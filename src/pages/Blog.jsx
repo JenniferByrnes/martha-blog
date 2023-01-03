@@ -1,17 +1,94 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
+import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'firebase/firestore'
+import { db } from '../firebase.config'
+import { toast } from 'react-toastify'
+import Spinner from '../components/Spinner'
 
 import BlogList from '../components/BlogList'
-import { useAuthStatus } from '../hooks/useAuthStatus'
 import BlogPostForm from '../components/BlogPostForm'
 
 const Blog = () => {
-  const { loggedIn, loading } = useAuthStatus()
 
-  // use useQuery hook to make query request
-//  const { loading, data } = useQuery(QUERY_THOUGHTS);
+  const [blogPosts, setBlogPosts] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [lastFetchedBlogPost, setLastFetchedBlogPost] = useState(null)
 
-//  const thoughts = data?.thoughts || [];
-//  console.log(thoughts);
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        // Get reference
+        const blogPostsRef = collection(db, 'blog')
+
+        // Create a query
+        const q = query(
+          blogPostsRef,
+          orderBy('createdAt', 'desc'),
+          limit(10)
+        )
+        console.log('q =')
+        console.log(q)
+
+        // Execute query
+        const querySnap = await getDocs(q)
+
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+        setLastFetchedBlogPost(lastVisible)
+
+        const blogPosts = []
+
+        querySnap.forEach((doc) => {
+          return blogPosts.push({
+            id: doc.id,
+            data: doc.data(),
+          })
+        })
+
+        setBlogPosts(blogPosts)
+        setLoading(false)
+      } catch (error) {
+        toast.error('Could not fetch blogPosts')
+      }
+    }
+
+    fetchBlogPosts()
+  }, [])
+
+  // Pagination / Load More
+  const onFetchMoreListings = async () => {
+    try {
+      // Get reference
+      const blogPostsRef = collection(db, 'blogPosts')
+
+      // Create a query
+      const q = query(
+        blogPostsRef,
+        orderBy('createdAt', 'desc'),
+        startAfter(lastFetchedBlogPost),
+        limit(10)
+      )
+
+      // Execute query
+      const querySnap = await getDocs(q)
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+      setLastFetchedBlogPost(lastVisible)
+
+      const blogPosts = []
+
+      querySnap.forEach((doc) => {
+        return blogPosts.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
+
+      setBlogPosts((prevState) => [...prevState, ...blogPosts])
+      setLoading(false)
+    } catch (error) {
+      toast.error('Could not fetch blogPosts')
+    }
+  }
 
   return (
     // Page Container
@@ -51,23 +128,19 @@ const Blog = () => {
         <div className="flex-grow shrink ">
           {/* Column for blog posts */}
           <div className="justify-space-between ">
-            {/* Check if user is logged in */}
-            {loggedIn && (
-              <div className="mb-3 ">
-                {/* logged in user can add post */}
-                <BlogPostForm />
-              </div>
-            )}
-            {/* Blog articles for all users. */}
-            {/* Why is loggedIn part of this className??? */}
-            {/* Does it display the name???? */}
-            {/* Not sure that this works.... */}
-            <div className={`mx-5 ${loggedIn}`}>
+            {/* Blog articles for all users once they are selected. */}
+            <div className={`mx-5`}>
               {loading ? (
-                <div>Loading...</div>
+                <Spinner />
               ) : (
-//                <BlogList thoughts={thoughts} />
-<p>Hello World</p>
+                <>
+                  <p >{blogPosts.length}</p>
+                  <ul>{blogPosts.map((blogPost) => (
+                    <h3 key={blogPost.id}>{blogPost.data.blogPostTitle}</h3>
+                  // {/* <BlogList blogPosts={blogPosts} /> */ }
+                  ))}
+                  </ul>
+                </>
               )}
             </div>
           </div>
