@@ -1,6 +1,6 @@
 import { getAuth, updateProfile } from 'firebase/auth'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
@@ -108,6 +108,9 @@ export default function Profile() {
               <button type='button' className="form-button"
                 onClick={onLogout}>  Logout </button>
             </div>
+            <Link to='/create-post'>
+
+            </Link>
           </div>
         </div>
       </main>

@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Blog from './pages/Blog'
 import EditPost from './pages/EditPost'
-import NewPost from './pages/NewPost'
+import CreateBlogPost from './pages/CreateBlogPost'
 import ForgotPassword from './pages/ForgotPassword'
 import Login from './pages/Login'
 import Home from './pages/Home'
@@ -24,7 +24,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/blog' element={<Blog />} />
           <Route path='/edit-post' element={<EditPost />} />
-          <Route path='/new-post' element={<NewPost />} />
+          <Route path='/create-post' element={<CreateBlogPost />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           {/* Nested route to direct based on Auth status */}
           <Route path='/profile' element={<PrivateRoute />}>

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import BlogImage from '../BlogImage';
+import React, { useState, useEffect } from 'react';
+import BlogImage from '../components/BlogImage';
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import Spinner from '../components/Spinner'
 
-const BlogPostForm = () => {
+const CreateBlogPost = () => {
 
   const [blogPostText, setThoughtText] = useState('');
   const [blogPostTitle, setThoughtTitle] = useState('');
@@ -115,4 +119,4 @@ const BlogPostForm = () => {
   );
 };
 }
-export default BlogPostForm;
+export default CreateBlogPost;

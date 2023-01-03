@@ -4,11 +4,12 @@ import { useQuery } from '@apollo/client';
 import { QUERY_THOUGHT } from '../utils/queries';
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
-
-import Auth from '../utils/auth';
+import { getAuth } from 'firebase/auth'
 
 const SingleThought = props => {
 
+  // Get token
+  const auth = getAuth()
   const { id: thoughtId } = useParams();
 
   const { loading, data } = useQuery(QUERY_THOUGHT, {
@@ -42,7 +43,7 @@ const SingleThought = props => {
           </p>
         </div>
       </div>
-      {Auth.loggedIn()}
+      {auth.loggedIn()}
     </section>
   );
 };

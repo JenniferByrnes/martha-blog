@@ -1,12 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, limit, startAfter } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
-
 import BlogList from '../components/BlogList'
-import BlogPostForm from '../components/BlogPostForm'
 
 const Blog = () => {
 
@@ -133,14 +131,14 @@ const Blog = () => {
               {loading ? (
                 <Spinner />
               ) : (
-                <>
-                  <p >{blogPosts.length}</p>
-                  <ul>{blogPosts.map((blogPost) => (
-                    <h3 key={blogPost.id}>{blogPost.data.blogPostTitle}</h3>
-                  // {/* <BlogList blogPosts={blogPosts} /> */ }
-                  ))}
-                  </ul>
-                </>
+                <ul>
+                {blogPosts.map((blogPost) => (
+                  <BlogList
+                    blogPost={blogPost.data}
+                    id={blogPost.id}
+                  />
+                ))}
+              </ul>
               )}
             </div>
           </div>
