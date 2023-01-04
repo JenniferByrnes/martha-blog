@@ -45,12 +45,6 @@ export default function BlogImage({ handleImage }) {
       });
   };
 
-  //Code from What's Cooking that updates image without saving)
-  // function updtImage() {
-  //   const source = document.getElementById("recipe-image").value;
-  //   document.getElementById("recipe-pic").src = source;
-  // }
-
   return (
     // image display and selection
     <div className="container pt-5">
@@ -58,6 +52,7 @@ export default function BlogImage({ handleImage }) {
       <input
         accept="image/*"
         type="file"
+        id='image'
         className="bg-pcGreen border-pcGreen border-4"
         onChange={imageChange}
       />

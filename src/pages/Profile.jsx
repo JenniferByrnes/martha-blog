@@ -108,8 +108,8 @@ export default function Profile() {
               <button type='button' className="form-button"
                 onClick={onLogout}>  Logout </button>
             </div>
-            <Link to='/create-post'>
-
+            <Link
+              to='/create-post'>CREATE POST
             </Link>
           </div>
         </div>
