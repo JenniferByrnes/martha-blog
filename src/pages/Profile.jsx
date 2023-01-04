@@ -1,6 +1,6 @@
 import { getAuth, updateProfile } from 'firebase/auth'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 export default function Profile() {
   const auth = getAuth()
   const [changeDetails, setChangeDetails] = useState(false)
+  console.log("changeDetails=", changeDetails)
 
   const [formData, setFormData] = useState({
     username: auth.currentUser.displayName,
@@ -68,19 +69,17 @@ export default function Profile() {
   return (
     <section className="flex flex-col items-center justify-center px-6 py-8 pt-[60px] mx-auto md:h-screen lg:py-0 text-stone-800">
       <h1 className="flex items-center mb-6 text-3xl border-b-4 border-pcCoral">
-        <p>My Profile  </p>
-        <button type='button'
-          onClick={onLogout}>  Logout </button>
+        <p>My Profile</p>
       </h1>
       <main
         className="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:m-0"
       >
         <div className="form-container">
           <div className="form-inner-container">
-              <h1 className="text-2xl">Personal Details</h1>
+            <h1 className="text-2xl">Personal Details</h1>
             <div>
-              <form className="space-y-4 md:space-y-6 " action="">
-                <label htmlFor="username" className="block mb-2 text-sm font-medium ">Your username</label>
+              <form className="space-y-2 md:space-y-4 " action="">
+                <label htmlFor="username" className="block text-sm font-medium ">Your username</label>
                 {/* Make text appear changeable when available */}
                 <input type="text"
                   id='username'
@@ -89,22 +88,29 @@ export default function Profile() {
                   value={username}
                   onChange={onChange}
                 />
-                <label htmlFor="email" className="block mb-2 text-sm font-medium ">Your email</label>
-                <input type="text"
+                <label htmlFor="email" className="block text-sm font-medium ">Your email</label>
+                <input type="email"
                   id='email'
-                  className='bg-pcGreen'
+                  className='bg-pcGreen mb-20'
                   disabled={!changeDetails}
                   value={email}
                   onChange={onChange}
                 />
-                <button type="submit" className="form-button" onClick={() => {
+                {/* This must not be a button or type "submit" - causes a re-render */}
+                <p className="form-button" onClick={() => {
                   changeDetails && onSubmit()
                   setChangeDetails((prevState) => !prevState)
                 }}>
                   {changeDetails ? 'Save' : 'Update'}
-                </button>
+                </p>
+
               </form>
+              <button type='button' className="form-button"
+                onClick={onLogout}>  Logout </button>
             </div>
+            <Link
+              to='/create-post'>CREATE POST
+            </Link>
           </div>
         </div>
       </main>

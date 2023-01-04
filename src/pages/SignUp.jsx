@@ -5,7 +5,6 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 //import OAuth from '../components/OAuth'
 import { db } from '../firebase.config.js'
-import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import image from '../assets/images/BurfordTogether.jpeg'
 
