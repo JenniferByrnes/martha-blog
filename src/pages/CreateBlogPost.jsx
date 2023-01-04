@@ -90,8 +90,11 @@ const CreateBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
-  const handleFormSubmit = async event => {
-    event.preventDefault();
+  const handleFormSubmit = e => {
+    e.preventDefault()
+    console.log("handleformsubmit")
+    console.log(    blogPostTitle, blogPostText,
+    blogPostImage)
   };
 
   //  try {
@@ -109,10 +112,6 @@ const CreateBlogPost = () => {
   //    console.error(e);
   //  }
   //};
-
-  const onSubmit = e => {
-    e.preventDefault()
-  }
 
   return (
     // Container for new blog post
@@ -172,7 +171,6 @@ const CreateBlogPost = () => {
             </div>
           </form>
         </div >
-        <form onSubmit={onSubmit}></form>
       </main>
 
     </div >
