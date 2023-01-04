@@ -25,6 +25,7 @@ export default function Profile() {
     navigate('/')
   }
 
+  // TODO - this does not update the email.  Needs to happen in auth and Firestore db
   const onSubmit = async () => {
     try {
       if (auth.currentUser.displayName !== username) {
@@ -35,14 +36,13 @@ export default function Profile() {
         // Update in Firestore
         const userRef = doc(db, 'users', auth.currentUser.uid)
         await updateDoc(userRef, {
-          name: username
+          username: username
         })
 
       }
     } catch (error) {
       console.log(error)
       toast.error('Could not update profile details')
-
     }
   }
 
