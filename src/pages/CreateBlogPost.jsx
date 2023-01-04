@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import BlogImage from '../components/BlogImage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { v4 } from "uuid";
 
 const CreateBlogPost = () => {
   console.log("in CREATE BLOG POST")
@@ -20,10 +21,13 @@ const CreateBlogPost = () => {
   const navigate = useNavigate()
   const isMounted = useRef(true)
 
-  const handleImage = savedURL => {
-    console.log('handleImage=', savedURL, ' done')
-    setBlogPostImage(savedURL);
-  }
+  const [selectedImage, setSelectedImage] = useState();
+  // This function will be triggered when the 'file' field changes
+  const imageChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
 
   useEffect(() => {
     if (isMounted) {
@@ -53,16 +57,55 @@ const CreateBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
+  // Handle file upload event and update state
+  // blogImages is the folder where the image will be stored.
+  const storeImage = () => {
+    if (!selectedImage) return;
+
+    return new Promise((resolve, reject) => {
+    const storage = getStorage()
+    // add characters to the filename to make it unique with v4
+    const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
+    // pass in the location and the image
+    uploadBytes(imageRef, selectedImage).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        resolve(url)
+        setBlogPostImage((url))
+        setSelectedImage()
+        console.log('blogPostImage=')
+        console.log(blogPostImage)
+        console.log('url=')
+        console.log(url)
+        console.log('imageRef=')
+        console.log(imageRef)
+      });
+
+    },
+      (err) => {
+        reject(err)},
+      () => {
+        // download url
+        getDownloadURL(uploadBytes.snapshot.ref).then((url) => {
+          console.log('File available at ', url);
+          console.log('blogPostImage=')
+          console.log(blogPostImage)
+          console.log('url=')
+          console.log(url)
+        });
+      });
+  })};
+
   const handleFormSubmit = e => {
     e.preventDefault()
     console.log("handleformsubmit")
-    console.log(    blogPostTitle, blogPostText,
-    blogPostImage)
+    setBlogPostImage(storeImage())
+    console.log(blogPostTitle, blogPostText,
+      blogPostImage)
 
     const timestamp = serverTimestamp()
 
     const docRef = addDoc(collection(db, 'blog'),
-    {blogPostTitle, blogPostText, blogPostImage, userRef, timestamp})
+      { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
     setLoading(false)
     toast.success('BlogPost Added')
     navigate(`/blog`)
@@ -81,11 +124,37 @@ const CreateBlogPost = () => {
           <form className="p-3 w-full"
             onSubmit={handleFormSubmit}
           >
-            {/* Image container */}
+            {/* Blog Image container */}
             <div className="col py-3 px-6 " md="auto">
               {/* Image sub container */}
               <div className="form-group mb-6">
-                <BlogImage handleImage={handleImage} />
+                {/* image display and selection */}
+                <div className="container pt-5">
+                  {/* type file allows user to upload file */}
+                  <input
+                    accept="image/*"
+                    type="file"
+                    id='image'
+                    className="bg-pcGreen border-pcGreen border-4"
+                    onChange={imageChange}
+                  />
+                  {/* 'Save file' must be a div - not a button. */}
+                  <div
+                    onClick={storeImage}
+                    // className="hidden"
+                  > Save file.</div>
+                  {/* preview selected file */}
+                  {selectedImage && (
+                    <div className="flex flex-col mt-4 " >
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        className="max-w-100 max-h-96"
+                        alt="Thumb"
+                      />
+                    </div>
+                  )}
+                  {/* save selected file to Firebase*/}
+                </div>
               </div>
             </div>
             {/* Next row */}
@@ -93,16 +162,16 @@ const CreateBlogPost = () => {
               {/* Blog title */}
               <div className="mb-6">
                 <label for="title" className="block mb-2 text-sm font-medium ">Title</label>
-                <input 
-                type="text" 
-                id="blogPostTitle" 
-                value={blogPostTitle}
-                className="  border-2 border-pcGreen w-full p-3 mb-4 focus: outline-pcGreen rounded"
+                <input
+                  type="text"
+                  id="blogPostTitle"
+                  value={blogPostTitle}
+                  className="  border-2 border-pcGreen w-full p-3 mb-4 focus: outline-pcGreen rounded"
                   onChange={handleChangeTitle}
                 />
               </div>
             </div>
-            {/* This is the blog text */}
+            {/* Blog Text */}
             <div classname="row">
               <div className="form-group mb-6">
                 <label for="text"
