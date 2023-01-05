@@ -26,7 +26,12 @@ const CreateBlogPost = () => {
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
+
     }
+    console.log('jkb setSelectedImage=')
+    console.log(setSelectedImage)
+    console.log('jkb selectedImage=')
+    console.log(selectedImage)
   };
 
   useEffect(() => {
@@ -60,6 +65,8 @@ const CreateBlogPost = () => {
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
   const storeImage = () => {
+    console.log('JKB selectedImage=')
+    console.log(selectedImage)
     if (!selectedImage) return;
 
     return new Promise((resolve, reject) => {
