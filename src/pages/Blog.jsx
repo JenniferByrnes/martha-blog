@@ -21,7 +21,7 @@ const Blog = () => {
         // Create a query
         const q = query(
           blogPostsRef,
-          orderBy('createdAt', 'desc'),
+          orderBy('timestamp', 'desc'),
           limit(10)
         )
         console.log('q =')

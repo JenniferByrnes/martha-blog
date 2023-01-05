@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import BlogImage from '../components/BlogImage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { db } from '../firebase.config'
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { v4 } from "uuid";
 
 const CreateBlogPost = () => {
   console.log("in CREATE BLOG POST")
@@ -11,17 +14,6 @@ const CreateBlogPost = () => {
   const [blogPostTitle, setBlogPostTitle] = useState('');
   const [blogPostImage, setBlogPostImage] = useState('');
   const [userRef, setUserRef] = useState('');
-  // const [formData, setFormData] = useState({
-  //   blogPostText: '',
-  // blogPostTitle: '',
-  // blogPostImage: ''
-  // })
-
-  // const {
-  //   text,
-  // title,
-  // image
-  // } = formData
 
   const [loading, setLoading] = useState(false)
 
@@ -29,15 +21,17 @@ const CreateBlogPost = () => {
   const navigate = useNavigate()
   const isMounted = useRef(true)
 
-  const handleImage = savedURL => {
-    setBlogPostImage(savedURL);
-  }
+  const [selectedImage, setSelectedImage] = useState();
+  // This function will be triggered when the 'file' field changes
+  const imageChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
 
   useEffect(() => {
     if (isMounted) {
       onAuthStateChanged(auth, (user) => {
-        console.log("in CREATE BLOG POST - authState")
-        console.log(user.uid)
         if (user) {
           setUserRef(user.uid)
         } else {
@@ -46,41 +40,14 @@ const CreateBlogPost = () => {
       })
     }
     return () => {
-      console.log("in CREATE BLOG POST - isMounted.current")
-      console.log(isMounted.current)
       isMounted.current = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted])
 
   if (loading) {
-    console.log("in CREATE BLOG POST - loading")
-    console.log(loading)
     return <Spinner />
   }
-  //const [addBlogPost, { error }] = useMutation(ADD_THOUGHT, {
-  //  update(cache, { data: { addBlogPost } }) {
-
-  // could potentially not exist yet, so wrap in a try/catch
-  //    try {
-  // update me array's cache
-  //      const { me } = cache.readQuery({ query: QUERY_ME });
-  //      cache.writeQuery({
-  //        query: QUERY_ME,
-  //        data: { me: { ...me, blogPosts: [...me.blogPosts, addBlogPost] } },
-  //      });
-  //    } catch (e) {
-  //      console.warn("First post!")
-  //    }
-
-  // update blogPost array's cache
-  //    const { blogPosts } = cache.readQuery({ query: QUERY_THOUGHTS });
-  //    cache.writeQuery({
-  //      query: QUERY_THOUGHTS,
-  //      data: { blogPosts: [addBlogPost, ...blogPosts] },
-  //    });
-  //  }
-  //});
 
   const handleChangeText = event => {
     setBlogPostText(event.target.value);
@@ -90,32 +57,63 @@ const CreateBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
+  // Handle file upload event and update state
+  // blogImages is the folder where the image will be stored.
+  const storeImage = () => {
+    if (!selectedImage) return;
+
+    return new Promise((resolve, reject) => {
+    const storage = getStorage()
+    // add characters to the filename to make it unique with v4
+    const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
+    // pass in the location and the image
+    uploadBytes(imageRef, selectedImage).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        resolve(url)
+        setBlogPostImage((url))
+        setSelectedImage()
+        console.log('blogPostImage=')
+        console.log(blogPostImage)
+        console.log('url=')
+        console.log(url)
+        console.log('imageRef=')
+        console.log(imageRef)
+      });
+
+    },
+      (err) => {
+        reject(err)},
+      () => {
+        // download url
+        getDownloadURL(uploadBytes.snapshot.ref).then((url) => {
+          console.log('File available at ', url);
+          console.log('blogPostImage=')
+          console.log(blogPostImage)
+          console.log('url=')
+          console.log(url)
+        });
+      });
+  })};
+
   const handleFormSubmit = e => {
     e.preventDefault()
     console.log("handleformsubmit")
-    console.log(    blogPostTitle, blogPostText,
-    blogPostImage)
+    setBlogPostImage(storeImage())
+    console.log(blogPostTitle, blogPostText,
+      blogPostImage)
+
+    const timestamp = serverTimestamp()
+
+    const docRef = addDoc(collection(db, 'blog'),
+      { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+    setLoading(false)
+    toast.success('BlogPost Added')
+    navigate(`/blog`)
   };
-
-  //  try {
-  // add blogPost to database
-  //    await addBlogPost({
-  //      variables: { blogPostTitle, blogPostImage, blogPostText }
-  //    });
-
-  // clear form value
-  //    setBlogPostText('');
-  //    setBlogPostTitle('');
-  //    setBlogPostImage('');
-
-  //  } catch (e) {
-  //    console.error(e);
-  //  }
-  //};
 
   return (
     // Container for new blog post
-    <div>
+    <>
       <header className="flex justify-center">
         <p>Create a BlogPost</p>
       </header>
@@ -126,11 +124,37 @@ const CreateBlogPost = () => {
           <form className="p-3 w-full"
             onSubmit={handleFormSubmit}
           >
-            {/* Image container */}
+            {/* Blog Image container */}
             <div className="col py-3 px-6 " md="auto">
               {/* Image sub container */}
               <div className="form-group mb-6">
-                <BlogImage handleImage={handleImage} />
+                {/* image display and selection */}
+                <div className="container pt-5">
+                  {/* type file allows user to upload file */}
+                  <input
+                    accept="image/*"
+                    type="file"
+                    id='image'
+                    className="bg-pcGreen border-pcGreen border-4"
+                    onChange={imageChange}
+                  />
+                  {/* 'Save file' must be a div - not a button. */}
+                  <div
+                    onClick={storeImage}
+                    // className="hidden"
+                  > Save file.</div>
+                  {/* preview selected file */}
+                  {selectedImage && (
+                    <div className="flex flex-col mt-4 " >
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        className="max-w-100 max-h-96"
+                        alt="Thumb"
+                      />
+                    </div>
+                  )}
+                  {/* save selected file to Firebase*/}
+                </div>
               </div>
             </div>
             {/* Next row */}
@@ -138,16 +162,16 @@ const CreateBlogPost = () => {
               {/* Blog title */}
               <div className="mb-6">
                 <label for="title" className="block mb-2 text-sm font-medium ">Title</label>
-                <input 
-                type="text" 
-                id="blogPostTitle" 
-                value={blogPostTitle}
-                className="  border-2 border-pcGreen w-full p-3 mb-4 focus: outline-pcGreen rounded"
+                <input
+                  type="text"
+                  id="blogPostTitle"
+                  value={blogPostTitle}
+                  className="  border-2 border-pcGreen w-full p-3 mb-4 focus: outline-pcGreen rounded"
                   onChange={handleChangeTitle}
                 />
               </div>
             </div>
-            {/* This is the blog text */}
+            {/* Blog Text */}
             <div classname="row">
               <div className="form-group mb-6">
                 <label for="text"
@@ -173,7 +197,7 @@ const CreateBlogPost = () => {
         </div >
       </main>
 
-    </div >
+    </ >
   );
 };
 

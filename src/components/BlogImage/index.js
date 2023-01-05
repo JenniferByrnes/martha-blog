@@ -1,8 +1,9 @@
 // This code was mostly created by PedroTech in his tutorial on YouTube
 import { useState } from "react"
 import { db } from "../../firebase.config"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { v4 } from "uuid";
+import { toast } from 'react-toastify'
 
 export default function BlogImage({ handleImage }) {
   // State for the uploaded image
@@ -26,8 +27,9 @@ export default function BlogImage({ handleImage }) {
   // blogImages is the folder where the image will be stored.
   const uploadFile = () => {
     if (!selectedImage) return;
+    const storage = getStorage()
     // add characters to the filename to make it unique with v4
-    const imageRef = ref(db, `blogImages/${selectedImage.name + v4()}`);
+    const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
     // pass in the location and the image
     uploadBytes(imageRef, selectedImage).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
@@ -36,11 +38,11 @@ export default function BlogImage({ handleImage }) {
       });
 
     },
-      (err) => console.log(err),
+      (err) => toast.error('Image not uploaded'),
       () => {
         // download url
         getDownloadURL(uploadBytes.snapshot.ref).then((url) => {
-          console.log(url);
+          console.log('File available at ', url);
         });
       });
   };
@@ -56,9 +58,9 @@ export default function BlogImage({ handleImage }) {
         className="bg-pcGreen border-pcGreen border-4"
         onChange={imageChange}
       />
-      <button
+      <div
         onClick={uploadFile}
-      > Save file.</button>
+      > Save file.</div>
       {imageUrls.map((url) => {
         { handleImage(url) };
         return <img src={url} alt='' width='50%' />;
@@ -72,19 +74,14 @@ export default function BlogImage({ handleImage }) {
             alt="Thumb"
           />
           {/* user can choose to remove previewed image */}
-
-          <button
+          <div
             onClick={removeSelectedImage}
             className="cursor-pointer p-3 mt-5 w-fit mx-auto rounded-full bg-pcGreen"
           >Changed your mind?
-          </button>
-
+          </div>
         </div>
       )}
       {/* save selected file to Firebase*/}
-
-
-
     </div>
   );
 }
