@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Blog from './pages/Blog'
 import EditPost from './pages/EditPost'
 import CreateBlogPost from './pages/CreateBlogPost'
+import SingleBlogPost from './pages/SingleBlogPost'
 import ForgotPassword from './pages/ForgotPassword'
 import Login from './pages/Login'
 import Home from './pages/Home'
@@ -24,6 +25,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/blog' element={<Blog />} />
           <Route path='/edit-post' element={<EditPost />} />
+          <Route path='/single-blog-post/:blogPostId' element={<SingleBlogPost />} />
           <Route path='/create-post' element={<CreateBlogPost />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           {/* Nested route to direct based on Auth status */}

@@ -9,7 +9,6 @@ import { ref, uploadBytesResumable, getDownloadURL, getStorage } from "firebase/
 import { v4 } from "uuid";
 
 const CreateBlogPost = () => {
-  console.log("in CREATE BLOG POST")
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
   const [blogPostImage, setBlogPostImage] = useState('');
@@ -22,18 +21,9 @@ const CreateBlogPost = () => {
   const isMounted = useRef(true)
 
   const [selectedImage, setSelectedImage] = useState();
+  const [selectedImageName, setSelectedImageName] = useState();
   // This function will be triggered when the 'file' field changes
-  const imageChange = (e) => {
-    console.log("JKB imageChange")
-    console.log("1JKB e.target.files=")
-    console.log(e.target.files[0])
-    if (e.target.files) {
-      setSelectedImage({image: e.target.files[0]});
 
-      console.log("2JKB selectedImage=")
-      console.log(selectedImage)
-    }
-  };
 
   useEffect(() => {
     if (isMounted) {
@@ -167,6 +157,19 @@ const CreateBlogPost = () => {
     setLoading(false)
     toast.success('BlogPost Added')
     navigate(`/blog`)
+  };
+
+  const imageChange = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedImage(event.target.files[0]);
+      setSelectedImageName(event.target.files[0].name)
+    }
+    console.log("JKB imageChange selectedImageName=")
+    console.log(selectedImageName)
+    console.log("JKB imageChange event.target.files[0]=")
+    console.log(event.target.files[0])
+    console.log("JKB imageChange event.target.files[0].namne=")
+    console.log(event.target.files[0].name)
   };
 
   return (

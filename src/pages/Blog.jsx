@@ -53,7 +53,7 @@ const Blog = () => {
   }, [])
 
   // Pagination / Load More
-  const onFetchMoreListings = async () => {
+  const onFetchMoreBlogPosts = async () => {
     try {
       // Get reference
       const blogPostsRef = collection(db, 'blogPosts')
