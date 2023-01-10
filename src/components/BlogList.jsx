@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import SingleBlogPost from '../../pages/SingleBlogPost'
+import SingleBlogPost from '../pages/SingleBlogPost'
 //import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
 //import { ReactComponent as EditIcon } from '../assets/svg/editIcon.svg'
 

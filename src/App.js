@@ -6,6 +6,7 @@ import EditPost from './pages/EditPost'
 import CreateBlogPost from './pages/CreateBlogPost'
 import SingleBlogPost from './pages/SingleBlogPost'
 import ForgotPassword from './pages/ForgotPassword'
+import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
@@ -33,6 +34,7 @@ function App() {
             {/* This is the child element used by Outlet in Private Route */}
             <Route path='/profile' element={<Profile />} />
           </Route>
+          <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
           <Route path='/photos' element={<Photos />} />
           <Route path='/sign-up' element={<SignUp />} />

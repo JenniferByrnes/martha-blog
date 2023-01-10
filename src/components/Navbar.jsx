@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-//import Auth from '../../utils/auth';
-import { getAuth, updateProfile } from 'firebase/auth'
+import { getAuth } from 'firebase/auth'
 import { useAuthStatus } from '../hooks/useAuthStatus'
 import { useNavigate } from 'react-router-dom'
 import "./navbar.css";
@@ -12,7 +11,7 @@ export default function Navbar() {
   const userClick = () => setNav(!nav)
   const navigate = useNavigate()
   const auth = getAuth()
-  const { loggedIn, checkingStatus  } = useAuthStatus()
+  const { loggedIn, checkingStatus } = useAuthStatus()
   console.log('jkb auth data=')
   console.log(loggedIn, checkingStatus)
   console.log('jkb auth=')
@@ -28,9 +27,9 @@ export default function Navbar() {
   const logout = event => {
     // TODO - this should cause a re-render of the NavBar
     // event.preventDefault();
-      auth.signOut()
-      navigate('/')
-    }
+    auth.signOut()
+    navigate('/')
+  }
 
 
   return (
@@ -55,17 +54,20 @@ export default function Navbar() {
             <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
               <NavLink to="/blog">Blog</NavLink>
             </li>
+            <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
+              <NavLink to="/contact">Contact</NavLink>
+            </li>
 
             {loggedIn ? (
               // {Auth.loggedIn() ? (
               <>
                 <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-                  <NavLink to="/profile">Profile</NavLink>
+                  <NavLink to="/profile">Admin</NavLink>
                 </li>
-                <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-                  {/* <NavLink to="/profile">My Posts</NavLink> */}
+                {/* Logout function is on Profile page */}
+                {/* <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                   <NavLink to="/" onClick={logout}>Logout</NavLink>
-                </li>
+                </li> */}
               </>
             ) : (
               <>
@@ -80,7 +82,7 @@ export default function Navbar() {
 
           {/* Nav Hamburger Menu */}
           {/* This does animation! */}
-          <div onClick={userClick} className="md:hidden z-10 justify-items-end  hover:text-pcCoral hover:text-xl">
+          <div onClick={userClick} className="md:hidden z-10 justify-items-end">
             {!nav ? <div className="md:hidden">
               <button
                 id="menu-btn"
@@ -108,32 +110,34 @@ export default function Navbar() {
             <ul className={
               !nav
                 ? "hidden"
-                : "top-0 bottom-0 left-0 flex flex-col py-2 text-lg  justify-evenly items-start "
+                : "top-0 bottom-0 left-0 flex flex-col py-2 text-lg justify-evenly items-start "
             }>
               <NavLink
-                className="hover:text-pcCoral hover:text-xl"
+                className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                 to="/photos">Photos</NavLink>
-              <NavLink className="hover:text-pcCoral hover:text-xl"
+              <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                 to="/blog" >Blog</NavLink>
+              <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+                to="/contact" >Contact</NavLink>
 
 
               {/* Logged in user sees Logout option, otherwise Login/Signin option */}
               {loggedIn ? (
                 // {Auth.loggedIn() ? (
-                <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
+                <li className="">
                   {/* <NavLink to="/profile">My Posts</NavLink> */}
-                  <NavLink className="hover:text-pcCoral hover:border-b   hover:border-pcCoral"
-                    to="/profile" >Profile or My Posts</NavLink>
-                    
-                  <NavLink onClick={logout}
+                  <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+                    to="/profile" >Admin</NavLink>
+                  {/* There's no need to logout - it's on the Profile page */}
+                  {/* <NavLink onClick={logout}
                     to="/" >Logout
-                  </NavLink>
+                  </NavLink> */}
                 </li>
               ) : (
                 <>
-                  <NavLink className="hover:text-pcCoral hover:text-xl"
+                  <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                     to="/login" >Login</NavLink>
-                  <NavLink className="hover:text-pcCoral hover:text-xl" to="/sign-up" >Sign Up</NavLink>
+                  <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral" to="/sign-up" >Sign Up</NavLink>
                 </>
               )}
             </ul>
@@ -143,3 +147,4 @@ export default function Navbar() {
     </header>
   );
 };
+

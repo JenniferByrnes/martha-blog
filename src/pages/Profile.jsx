@@ -69,7 +69,7 @@ export default function Profile() {
   return (
     <section className="flex flex-col items-center justify-center px-6 py-8 pt-[60px] mx-auto md:h-screen lg:py-0 text-stone-800">
       <h1 className="flex items-center mb-6 text-3xl border-b-4 border-pcCoral">
-        <p>My Profile</p>
+        <p>Admin Use Only</p>
       </h1>
       <main
         className="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:m-0"
