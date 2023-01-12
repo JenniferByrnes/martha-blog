@@ -24,8 +24,6 @@ const Blog = () => {
           orderBy('timestamp', 'desc'),
           limit(10)
         )
-        console.log('q =')
-        console.log(q)
 
         // Execute query
         const querySnap = await getDocs(q)

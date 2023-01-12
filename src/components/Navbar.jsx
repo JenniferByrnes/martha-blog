@@ -12,10 +12,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const auth = getAuth()
   const { loggedIn, checkingStatus } = useAuthStatus()
-  console.log('jkb auth data=')
-  console.log(loggedIn, checkingStatus)
-  console.log('jkb auth=')
-  console.log(auth)
+
   // const location = useLocation()
 
   // const pathMatchRoute = (route) => {
@@ -31,7 +28,6 @@ export default function Navbar() {
     navigate('/')
   }
 
-
   return (
     <header className="w-full bg-stone-200 text-black">
       {/* Container for Nav elements - title and nav */}
@@ -45,8 +41,6 @@ export default function Navbar() {
         </>
         <>
           {/* Nav Menu */}
-
-
           <ul className="hidden md:flex md:space-x-5 items-center justify-around py-2">
             <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
               <NavLink to="/photos">Photos</NavLink>
@@ -59,15 +53,10 @@ export default function Navbar() {
             </li>
 
             {loggedIn ? (
-              // {Auth.loggedIn() ? (
               <>
                 <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                   <NavLink to="/profile">Admin</NavLink>
                 </li>
-                {/* Logout function is on Profile page */}
-                {/* <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-                  <NavLink to="/" onClick={logout}>Logout</NavLink>
-                </li> */}
               </>
             ) : (
               <>
@@ -105,7 +94,6 @@ export default function Navbar() {
               </button>
             </div>}
 
-
             {/* Mobile Nav Menu */}
             <ul className={
               !nav
@@ -123,15 +111,9 @@ export default function Navbar() {
 
               {/* Logged in user sees Logout option, otherwise Login/Signin option */}
               {loggedIn ? (
-                // {Auth.loggedIn() ? (
                 <li className="">
-                  {/* <NavLink to="/profile">My Posts</NavLink> */}
                   <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                     to="/profile" >Admin</NavLink>
-                  {/* There's no need to logout - it's on the Profile page */}
-                  {/* <NavLink onClick={logout}
-                    to="/" >Logout
-                  </NavLink> */}
                 </li>
               ) : (
                 <>

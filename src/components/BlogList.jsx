@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import SingleBlogPost from '../pages/SingleBlogPost'
-//import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
-//import { ReactComponent as EditIcon } from '../assets/svg/editIcon.svg'
+import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
+import { ReactComponent as EditIcon } from '../assets/svg/editIcon.svg'
 
-const blogList = ({ blogPost, id }) => {
+const blogList = ({ blogPost, id, onEdit, onDelete }) => {
 
   return (
     // Fills all blog posts
@@ -43,6 +42,15 @@ const blogList = ({ blogPost, id }) => {
             </p> */}
             </div>
           </Link>
+          {onDelete && (
+        <DeleteIcon
+          className='removeIcon'
+          fill='rgb(231, 76,60)'
+          onClick={() => onDelete(blogPost.id, blogPost.name)}
+        />
+      )}
+
+      {onEdit && <EditIcon className='editIcon' onClick={() => onEdit(id)} />}
         </div>
       </li>
     </>

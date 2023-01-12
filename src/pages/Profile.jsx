@@ -1,19 +1,30 @@
 import { getAuth, updateProfile } from 'firebase/auth'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { updateDoc, doc } from 'firebase/firestore'
+import {
+  updateDoc,
+  doc,
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit,
+  deleteDoc
+} from 'firebase/firestore'
+
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
-
+import BlogList from '../components/BlogList'
 
 export default function Profile() {
   const auth = getAuth()
+  const [loading, setLoading] = useState(true)
+  const [blogPosts, setBlogPosts] = useState(null)
   const [changeDetails, setChangeDetails] = useState(false)
-  console.log("changeDetails=", changeDetails)
-
   const [formData, setFormData] = useState({
     username: auth.currentUser.displayName,
-    email: auth.currentUser.email,
+    email: auth.currentUser.email
   })
 
   const { username, email } = formData
@@ -46,6 +57,37 @@ export default function Profile() {
     }
   }
 
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+
+      // Get reference
+      const blogPostsRef = collection(db, 'blog')
+
+      // Create a query
+      const q = query(
+        blogPostsRef,
+        orderBy('timestamp', 'desc')
+      )
+
+      // Execute query
+      const querySnap = await getDocs(q)
+
+      const blogPosts = []
+
+      querySnap.forEach((doc) => {
+        return blogPosts.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
+
+      setBlogPosts(blogPosts)
+      setLoading(false)
+    }
+
+    fetchBlogPosts()
+  }, [])
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -53,16 +95,16 @@ export default function Profile() {
     }))
   }
 
-  // const onDelete = async (listingId) => {
-  //   if (window.confirm('Are you sure you want to delete?')) {
-  //     await deleteDoc(doc(db, 'listings', listingId))
-  //     const updatedListings = listings.filter(
-  //       (listing) => listing.id !== listingId
-  //     )
-  //     setListings(updatedListings)
-  //     toast.success('Successfully deleted listing')
-  //   }
-  // }
+  const onDelete = async (blogPostId) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      await deleteDoc(doc(db, 'blog', blogPostId))
+      const updatedBlogPost = blogPosts.filter(
+        (blogPost) => blogPost.id !== blogPostId
+      )
+      setBlogPosts(updatedBlogPost)
+      toast.success('Successfully deleted post')
+    }
+  }
 
   // const onEdit = (listingId) => navigate(`/edit-listing/${listingId}`)
 
@@ -113,6 +155,22 @@ export default function Profile() {
             </Link>
           </div>
         </div>
+        {!loading && blogPosts?.length > 0 && (
+          <>
+            <p>BlogPosts</p>
+            <ul>
+              {blogPosts.map((blogPost) => (
+                <BlogList
+                  key={blogPost.id}
+                  blogPost={blogPost.data}
+                  id={blogPost.id}
+                  onDelete={() => onDelete(blogPost.id)}
+                />
+              ))}
+
+            </ul>
+          </>
+        )}
       </main>
     </section>
   )

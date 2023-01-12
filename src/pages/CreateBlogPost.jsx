@@ -20,13 +20,10 @@ const CreateBlogPost = () => {
   const navigate = useNavigate()
   const isMounted = useRef(true)
 
-  // const [selectedImage, setSelectedImage] = useState();
-  // const [selectedImageName, setSelectedImageName] = useState();
   const [selectedImage, setSelectedImage] = useState();
   const [selectedImageName, setSelectedImageName] = useState();
-  // This function will be triggered when the 'file' field changes
 
-
+ // Only Auth users should be on this page.
   useEffect(() => {
     if (isMounted) {
       onAuthStateChanged(auth, (user) => {
@@ -55,7 +52,7 @@ const CreateBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
-
+ // This function will be triggered when the 'file' field changes
   const imageChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedImage(event.target.files[0]);
