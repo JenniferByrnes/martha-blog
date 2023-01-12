@@ -20,6 +20,8 @@ const CreateBlogPost = () => {
   const navigate = useNavigate()
   const isMounted = useRef(true)
 
+  // const [selectedImage, setSelectedImage] = useState();
+  // const [selectedImageName, setSelectedImageName] = useState();
   const [selectedImage, setSelectedImage] = useState();
   const [selectedImageName, setSelectedImageName] = useState();
   // This function will be triggered when the 'file' field changes
@@ -53,10 +55,25 @@ const CreateBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
+
+  const imageChange = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedImage(event.target.files[0]);
+      setSelectedImageName(event.target.files[0].name)
+      console.log("****** INSIDE IF STATEMENT*****")
+
+      console.log("JKB imageChange event.target.files[0].name=")
+      console.log(event.target.files[0].name)
+  
+      console.log("JKB imageChange selectedImageName=")
+      console.log(selectedImageName)
+      console.log("JKB imageChange selectedImage=")
+      console.log(selectedImage)
+    }
+  };
+
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
-
-
   const handleFormSubmit = async (e) => {
     e.preventDefault()
 
@@ -65,13 +82,13 @@ const CreateBlogPost = () => {
     console.log("JKB handleformsubmit")
 
     const storeImage = async (selectedImage)  => {
-      console.log("JKB storeImage")
+      console.log("**** IN storeImage ****")
       console.log("JKB selectedImage=")
       console.log(selectedImage)
-      if (selectedImage) {
+      if (selectedImage.name) {
 
       return new Promise((resolve, reject) => {
-        console.log("JKB Promise")
+        console.log("**** IN Promise ****")
         console.log("JKB selectedImage=")
         console.log(selectedImage)
         const storage = getStorage()
@@ -114,7 +131,7 @@ const CreateBlogPost = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             resolve(url)
             setBlogPostImage((url))
-            setSelectedImage()
+            setSelectedImage('')
             console.log('blogPostImage=')
             console.log(blogPostImage)
             console.log('url=')
@@ -159,18 +176,6 @@ const CreateBlogPost = () => {
     navigate(`/blog`)
   };
 
-  const imageChange = (event) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setSelectedImage(event.target.files[0]);
-      setSelectedImageName(event.target.files[0].name)
-    }
-    console.log("JKB imageChange selectedImageName=")
-    console.log(selectedImageName)
-    console.log("JKB imageChange event.target.files[0]=")
-    console.log(event.target.files[0])
-    console.log("JKB imageChange event.target.files[0].namne=")
-    console.log(event.target.files[0].name)
-  };
 
   return (
     // Container for new blog post
