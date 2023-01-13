@@ -34,23 +34,26 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
               </h5>
               {/* Blog post body */}
               {/* TODO - get elipsis working for overflow text. */}
-              <p className="inline-block group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText} ...</p>
+              <p className="inline-block group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText}</p>
 
               {/* Blog post footer (TODO - this doesn't work - "key" problem */}
               {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
-              {blogPost.createdAt}
+              {blogPost.timestamp}
             </p> */}
             </div>
           </Link>
           {onDelete && (
-        <DeleteIcon
-          className='removeIcon'
-          fill='rgb(231, 76,60)'
-          onClick={() => onDelete(blogPost.id, blogPost.name)}
-        />
-      )}
+            <DeleteIcon
+              className='removeIcon'
+              fill='rgb(231, 76,60)'
+              onClick={() => onDelete(blogPost.id, blogPost.name)}
+            />
+          )}
 
-      {onEdit && <EditIcon className='editIcon' onClick={() => onEdit(id)} />}
+          {onEdit && 
+          <EditIcon 
+          className='editIcon' 
+          onClick={() => onEdit(id)} />}
         </div>
       </li>
     </>

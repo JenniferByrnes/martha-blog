@@ -106,7 +106,7 @@ export default function Profile() {
     }
   }
 
-  // const onEdit = (listingId) => navigate(`/edit-listing/${listingId}`)
+  const onEdit = (blogPostId) => navigate(`/edit-blog-post/${blogPostId}`)
 
   return (
     <section className="flex flex-col items-center justify-center px-6 py-8 pt-[60px] mx-auto md:h-screen lg:py-0 text-stone-800">
@@ -165,6 +165,7 @@ export default function Profile() {
                   blogPost={blogPost.data}
                   id={blogPost.id}
                   onDelete={() => onDelete(blogPost.id)}
+                  onEdit={() => onEdit(blogPost.id)}
                 />
               ))}
 

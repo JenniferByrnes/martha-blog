@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Blog from './pages/Blog'
-import EditPost from './pages/EditPost'
+import EditBlogPost from './pages/EditBlogPost'
 import CreateBlogPost from './pages/CreateBlogPost'
 import SingleBlogPost from './pages/SingleBlogPost'
 import ForgotPassword from './pages/ForgotPassword'
@@ -19,13 +19,12 @@ import Navbar from './components/Navbar'
 function App() {
   return (
     <>
-
       <Router>
         <Navbar></Navbar>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/blog' element={<Blog />} />
-          <Route path='/edit-post' element={<EditPost />} />
+          <Route path='/edit-blog-post/:blogPostId' element={<EditBlogPost />} />
           <Route path='/single-blog-post/:blogPostId' element={<SingleBlogPost />} />
           <Route path='/create-post' element={<CreateBlogPost />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
