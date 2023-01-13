@@ -109,56 +109,65 @@ export default function Profile() {
   const onEdit = (blogPostId) => navigate(`/edit-blog-post/${blogPostId}`)
 
   return (
-    <section className="flex flex-col items-center justify-center px-6 py-8 pt-[60px] mx-auto md:h-screen lg:py-0 text-stone-800">
+    <section className="container mx-auto p-6 ">
       <h1 className="flex items-center mb-6 text-3xl border-b-4 border-pcCoral">
         <p>Admin Use Only</p>
-      </h1>
-      <main
-        className="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:m-0"
-      >
-        <div className="form-container">
-          <div className="form-inner-container">
-            <h1 className="text-2xl">Personal Details</h1>
-            <div>
-              <form className="space-y-2 md:space-y-4 " action="">
-                <label htmlFor="username" className="block text-sm font-medium ">Your username</label>
-                {/* Make text appear changeable when available */}
-                <input type="text"
-                  id='username'
-                  className={!changeDetails ? 'bg-pcGreen' : ''}
-                  disabled={!changeDetails}
-                  value={username}
-                  onChange={onChange}
-                />
-                <label htmlFor="email" className="block text-sm font-medium ">Your email</label>
-                <input type="email"
-                  id='email'
-                  className='bg-pcGreen mb-20'
-                  disabled={!changeDetails}
-                  value={email}
-                  onChange={onChange}
-                />
-                {/* This must not be a button or type "submit" - causes a re-render */}
-                <p className="form-button" onClick={() => {
-                  changeDetails && onSubmit()
-                  setChangeDetails((prevState) => !prevState)
-                }}>
-                  {changeDetails ? 'Save' : 'Update'}
-                </p>
 
-              </form>
+      </h1>
+      <br />
+      {/* Divide the container into columns */}
+      <div className="flex flex-col md:flex-row md:space-x-10" >
+
+        {/* left column */}
+        <div
+          className="flex justify-center  "
+        >
+          <div className="form-container ">
+            <div className="form-inner-container ">
+            <button type='button' className="form-button">  
+                  <Link
+                to='/create-post'>Create new post
+              </Link>
+              </button>
+              <br />
               <button type='button' className="form-button"
-                onClick={onLogout}>  Logout </button>
+                  onClick={onLogout}>  Logout </button>
+              <h1 className="text-2xl">Personal Details</h1>
+              <div>
+                <form className="space-y-2 md:space-y-4 " action="">
+                  <label htmlFor="username" className="block text-sm font-medium ">Your username</label>
+                  {/* Make text appear changeable when available */}
+                  <input type="text"
+                    id='username'
+                    className={!changeDetails ? 'bg-pcGreen' : ''}
+                    disabled={!changeDetails}
+                    value={username}
+                    onChange={onChange}
+                  />
+                  <label htmlFor="email" className="block text-sm font-medium ">Your email</label>
+                  <input type="email"
+                    id='email'
+                    className='bg-pcGreen mb-20'
+                    disabled={!changeDetails}
+                    value={email}
+                    onChange={onChange}
+                  />
+                  {/* This must not be a button or type "submit" - causes a re-render */}
+                  <p className="form-button" onClick={() => {
+                    changeDetails && onSubmit()
+                    setChangeDetails((prevState) => !prevState)
+                  }}>
+                    {changeDetails ? 'Save' : 'Update'}
+                  </p>
+                </form>
+              </div>
             </div>
-            <Link
-              to='/create-post'>CREATE POST
-            </Link>
           </div>
         </div>
+        {/* Right section of container */}
         {!loading && blogPosts?.length > 0 && (
-          <>
-            <p>BlogPosts</p>
-            <ul>
+          <div className="flex-grow">
+            <ul  className="justify-space-between ">
               {blogPosts.map((blogPost) => (
                 <BlogList
                   key={blogPost.id}
@@ -170,9 +179,9 @@ export default function Profile() {
               ))}
 
             </ul>
-          </>
+          </div>
         )}
-      </main>
+      </div>
     </section>
   )
 }

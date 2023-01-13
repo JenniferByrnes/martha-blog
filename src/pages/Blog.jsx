@@ -24,7 +24,7 @@ const Blog = () => {
           orderBy('timestamp', 'desc'),
           limit(10)
         )
-
+ 
         // Execute query
         const querySnap = await getDocs(q)
 

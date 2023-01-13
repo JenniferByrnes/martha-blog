@@ -13,7 +13,7 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
         {/* Card */}
         <div className="w-full m-1">
           {/* Card links to expanded blog post */}
-          <Link className="group flex flex-col md:flex-row items-center shadow-2xl md:max-w-full rounded-2xl bg-white"
+          <Link className="group flex flex-col relative md:flex-row items-center shadow-2xl md:max-w-full rounded-2xl bg-white"
             to={`/single-blog-post/${id}`}
             style={{
               textDecoration: 'none'
@@ -34,26 +34,28 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
               </h5>
               {/* Blog post body */}
               {/* TODO - get elipsis working for overflow text. */}
-              <p className="inline-block group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText}</p>
+              <p className="inline-block group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText} ...</p>
 
               {/* Blog post footer (TODO - this doesn't work - "key" problem */}
               {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
               {blogPost.timestamp}
             </p> */}
+
+              <div className='absolute top-0 right-2'>
+                {onDelete && (
+                  <DeleteIcon
+                    className='removeIcon'
+                    fill='rgb(231, 76,60)'
+                    onClick={() => onDelete(blogPost.id, blogPost.name)}
+                  />
+                )}
+                {onEdit &&
+                  <EditIcon
+                    className='editIcon'
+                    onClick={() => onEdit(id)} />}
+              </div>
             </div>
           </Link>
-          {onDelete && (
-            <DeleteIcon
-              className='removeIcon'
-              fill='rgb(231, 76,60)'
-              onClick={() => onDelete(blogPost.id, blogPost.name)}
-            />
-          )}
-
-          {onEdit && 
-          <EditIcon 
-          className='editIcon' 
-          onClick={() => onEdit(id)} />}
         </div>
       </li>
     </>
