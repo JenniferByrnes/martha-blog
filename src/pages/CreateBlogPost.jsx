@@ -177,8 +177,8 @@ const CreateBlogPost = () => {
   return (
     // Container for new blog post
     <>
-      <header className="flex justify-center">
-        <p>Create a BlogPost</p>
+      <header className="text-center">
+        <h2 className="text-4xl inline border-b-4 border-pcCoral">Add a post</h2>
       </header>
       <main className="flex justify-center">
         {/* Card */}

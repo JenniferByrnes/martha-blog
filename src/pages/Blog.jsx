@@ -141,6 +141,7 @@ const Blog = () => {
             </div>
             <br />
             <br />
+            {/* TODO - should not show when there are few posts. */}
             {lastFetchedBlogPost && (
               <p className="" onClick={onFetchMoreBlogPosts}>Load More</p>
             )}

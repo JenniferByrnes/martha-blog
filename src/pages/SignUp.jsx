@@ -6,7 +6,7 @@ import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 //import OAuth from '../components/OAuth'
 import { db } from '../firebase.config.js'
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
-import image from '../assets/images/BurfordTogether.jpeg'
+import image from '../assets/jpg/springflowers.jpeg'
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false)

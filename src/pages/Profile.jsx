@@ -102,6 +102,7 @@ export default function Profile() {
         (blogPost) => blogPost.id !== blogPostId
       )
       setBlogPosts(updatedBlogPost)
+      navigate('/profile')
       toast.success('Successfully deleted post')
     }
   }
@@ -110,9 +111,9 @@ export default function Profile() {
 
   return (
     <section className="container mx-auto p-6 ">
-              <div className="text-center">
-          <h2 className="text-4xl inline border-b-4 border-pcCoral">Admin Only</h2>
-          </div>
+      <div className="text-center">
+        <h2 className="text-4xl inline border-b-4 border-pcCoral">Admin Only</h2>
+      </div>
       <br />
       {/* Divide the container into columns */}
       <div className="flex flex-col md:flex-row md:space-x-10" >
@@ -123,14 +124,14 @@ export default function Profile() {
         >
           <div className="form-container ">
             <div className="form-inner-container ">
-            <button type='button' className="form-button">  
-                  <Link
-                to='/create-post'>Create new post
-              </Link>
+              <button type='button' className="form-button">
+                <Link
+                  to='/create-post'>Create new post
+                </Link>
               </button>
               <br />
               <button type='button' className="form-button"
-                  onClick={onLogout}>  Logout </button>
+                onClick={onLogout}>  Logout </button>
               <h1 className="text-2xl">Personal Details</h1>
               <div>
                 <form className="space-y-2 md:space-y-4 " action="">
@@ -166,7 +167,7 @@ export default function Profile() {
         {/* Right section of container */}
         {!loading && blogPosts?.length > 0 && (
           <div className="flex-grow">
-            <ul  className="justify-space-between ">
+            <ul className="justify-space-between ">
               {blogPosts.map((blogPost) => (
                 <BlogList
                   key={blogPost.id}
