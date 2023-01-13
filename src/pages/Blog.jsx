@@ -54,12 +54,12 @@ const Blog = () => {
   const onFetchMoreBlogPosts = async () => {
     try {
       // Get reference
-      const blogPostsRef = collection(db, 'blogPosts')
-
+      const blogPostsRef = collection(db, 'blog')
+        
       // Create a query
       const q = query(
         blogPostsRef,
-        orderBy('createdAt', 'desc'),
+        orderBy('timestamp', 'desc'),
         startAfter(lastFetchedBlogPost),
         limit(10)
       )
@@ -139,6 +139,11 @@ const Blog = () => {
               </ul>
               )}
             </div>
+            <br />
+            <br />
+            {lastFetchedBlogPost && (
+              <p className="" onClick={onFetchMoreBlogPosts}>Load More</p>
+            )}
           </div>
         </div>
       </div>
