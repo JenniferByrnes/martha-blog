@@ -110,10 +110,9 @@ export default function Profile() {
 
   return (
     <section className="container mx-auto p-6 ">
-      <h1 className="flex items-center mb-6 text-3xl border-b-4 border-pcCoral">
-        <p>Admin Use Only</p>
-
-      </h1>
+              <div className="text-center">
+          <h2 className="text-4xl inline border-b-4 border-pcCoral">Admin Only</h2>
+          </div>
       <br />
       {/* Divide the container into columns */}
       <div className="flex flex-col md:flex-row md:space-x-10" >
