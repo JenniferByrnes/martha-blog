@@ -24,7 +24,7 @@ const Contact = () => {
             <div className="form-inner-container ">
               {/* name */}
               <div>
-                <label for="name" className="block pt-3 ">
+                <label htmlFor="name" className="block pt-3 ">
                   Your name
                 </label>
                 <input
@@ -35,7 +35,7 @@ const Contact = () => {
               </div>
               {/* email */}
               <div>
-                <label for="email" className="block ">
+                <label htmlFor="email" className="block ">
                   Email address
                 </label>
                 <input
@@ -46,7 +46,7 @@ const Contact = () => {
               </div>
               {/* message */}
               <div>
-                <label for="message" className="block text-stone-800">
+                <label htmlFor="message" className="block text-stone-800">
                   Your message
                 </label>
                 <textarea

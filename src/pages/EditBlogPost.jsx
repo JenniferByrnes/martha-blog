@@ -251,7 +251,7 @@ const EditBlogPost = () => {
             <div className="row">
               {/* Blog title */}
               <div className="mb-6">
-                <label for="title" className="block mb-2 text-sm font-medium ">Title</label>
+                <label htmlFor="title" className="block mb-2 text-sm font-medium ">Title</label>
                 <input
                   type="text"
                   id="blogPostTitle"
@@ -264,7 +264,7 @@ const EditBlogPost = () => {
             {/* Blog Text */}
             <div className="row">
               <div className="form-group mb-6">
-                <label for="text"
+                <label htmlFor="text"
                   className="block mb-2 text-sm font-medium ">Content</label>
                 <textarea className="block      
                   w-full
