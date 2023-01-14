@@ -27,9 +27,9 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
               height='96px'
             />
             {/* Blog post text */}
-            <div class="group-hover:text-blue-500 p-2 md:p-6 flex flex-col items-center md:items-start">
+            <div className="group-hover:text-blue-500 p-2 md:p-6 flex flex-col items-center md:items-start">
               {/* Blog post title */}
-              <h5 class="group-hover:text-blue-500 text-gray-900 text-xl font-medium mb-2">
+              <h5 className="group-hover:text-blue-500 text-gray-900 text-xl font-medium mb-2">
                 {blogPost.blogPostTitle}
               </h5>
               {/* Blog post body */}

@@ -78,20 +78,24 @@ const EditBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
-  // This function will be triggered when the 'file' field changes
+  // When the 'file' field changes, image should be displayed.
   const imageChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
+      // TODO these next two statements do not work
       setSelectedImage(event.target.files[0]);
       setSelectedImageName(event.target.files[0].name)
       console.log("****** INSIDE IF STATEMENT*****")
 
       console.log("JKB imageChange event.target.files[0].name=")
       console.log(event.target.files[0].name)
+      console.log("JKB imageChange event.target.value=")
+      console.log(event.target.value)
 
-      console.log("JKB imageChange selectedImageName=")
-      console.log(selectedImageName)
       console.log("JKB imageChange selectedImage=")
       console.log(selectedImage)
+      console.log("JKB imageChange selectedImageName=")
+      console.log(selectedImageName)
+
     }
   };
 
@@ -181,7 +185,7 @@ const EditBlogPost = () => {
       }
     };
 
-    const imgUrls = await new Promise((image) => storeImage(image))
+    const imgUrl = await new Promise((image) => storeImage(image))
       .catch(() => {
         setLoading(false)
         toast.error('Image not uploaded')
