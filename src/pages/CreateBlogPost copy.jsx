@@ -9,7 +9,6 @@ import { ref, uploadBytesResumable, getDownloadURL, getStorage } from "firebase/
 import { v4 } from "uuid";
 
 const CreateBlogPost = () => {
-
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
   const [blogPostImage, setBlogPostImage] = useState('');
@@ -22,13 +21,9 @@ const CreateBlogPost = () => {
   const isMounted = useRef(true)
 
   const [selectedImage, setSelectedImage] = useState();
-  // This function will be triggered when the 'file' field changes
-  const imageChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
-    }
-  };
+  const [selectedImageName, setSelectedImageName] = useState();
 
+  // Only Auth users should be on this page.
   useEffect(() => {
     if (isMounted) {
       onAuthStateChanged(auth, (user) => {
@@ -57,61 +52,116 @@ const CreateBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
-  // Handle file upload event and update state
-  // blogImages is the folder where the image will be stored.
-  async function storeImage() {
-    console.log("***********in storeImage()************")
-    if (!selectedImage) return;
+  // This function will be triggered when the 'file' field changes
+  const imageChange = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedImage(event.target.files[0]);
+      setSelectedImageName(event.target.files[0].name)
+      console.log("****** INSIDE IF STATEMENT*****")
 
-    return new Promise((resolve, reject) => {
-      const storage = getStorage()
-      // add characters to the filename to make it unique with v4
-      const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
-      // pass in the location and the image
-      uploadBytesResumable(imageRef, selectedImage).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          console.log("*********** 1st getDownloadURL ************")
-          resolve(url)
-          setBlogPostImage((url))
-          setSelectedImage()
-          console.log('blogPostImage=')
-          console.log(blogPostImage)
-          console.log('url=')
-          console.log(url)
-          console.log('imageRef=')
-          console.log(imageRef)
-        }
-        );
-      },
-        (err) => {
-          toast.error('Image not uploaded')
-          reject(err)
-        },
-        () => {
-          // download url
-          getDownloadURL(uploadBytesResumable.snapshot.ref).then((url) => {
-            console.log("*********** 2nd getDownloadURL ************")
-            console.log('File available at ', url);
-            console.log('blogPostImage=')
-            console.log(blogPostImage)
-            console.log('url=')
-            console.log(url)
-          });
-        });
-    })
+      console.log("JKB imageChange event.target.files[0].name=")
+      console.log(event.target.files[0].name)
+      console.log("JKB imageChange event.target.value=")
+      console.log(event.target.value)
+
+      console.log("JKB imageChange selectedImage=")
+      console.log(selectedImage)
+      console.log("JKB imageChange selectedImageName=")
+      console.log(selectedImageName)
+
+      setSelectedImageName("fred")
+      console.log("JKB imageChange selectedImageNamevalue=")
+      console.log(selectedImageName)
+    }
   };
 
-  async function handleFormSubmit(e) {
+  // Handle file upload event and update state
+  // blogImages is the folder where the image will be stored.
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
-    console.log("handleformsubmit")
-    console.log('1blogPostImage=')
-    console.log(blogPostImage)
-    
-    setBlogPostImage(await storeImage())
-    console.log('2blogPostImage=')
-    console.log(blogPostImage)
+
+    setLoading(true)
+
+    console.log("JKB handleformsubmit")
+
+    const storeImage = async (selectedImage) => {
+      console.log("**** IN storeImage ****")
+      console.log("JKB selectedImage=")
+      console.log(selectedImage)
+      if (selectedImage.name) {
+
+        return new Promise((resolve, reject) => {
+          console.log("**** IN Promise ****")
+          console.log("JKB selectedImage=")
+          console.log(selectedImage)
+          const storage = getStorage()
+          console.log("JKB storage=")
+          console.log(storage)
+          console.log("JKB selectedImage.name=")
+          console.log(selectedImage.name)
+          // add characters to the filename to make it unique with v4
+          const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
+          console.log("JKB imageRef=")
+          console.log(imageRef)
+          // pass in the location and the image
+          const uploadTask = uploadBytesResumable(imageRef, selectedImage)
+
+          // Code from Firebase Storage docs
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              console.log('Upload is ' + progress + '% done')
+              switch (snapshot.state) {
+                case 'paused':
+                  console.log('Upload is paused')
+                  break
+                case 'running':
+                  console.log('Upload is running')
+                  break
+                default:
+                  break
+              }
+            },
+            (error) => {
+              reject(error)
+            },
+            () => {
+              // Handle successful uploads on complete
+              // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+
+              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                resolve(url)
+                setBlogPostImage((url))
+                setSelectedImage('')
+                console.log('blogPostImage=')
+                console.log(blogPostImage)
+                console.log('url=')
+                console.log(url)
+                console.log('imageRef=')
+                console.log(imageRef)
+              });
+
+            },
+            (err) => {
+              reject(err)
+            },
+          );
+        })
+      }
+    };
+
+    const imgUrl = await new Promise((image) => storeImage(image))
+      .catch(() => {
+        setLoading(false)
+        toast.error('Image not uploaded')
+        return
+      })
+
+    console.log("**** JKB check it out *****")
     console.log(blogPostTitle, blogPostText,
-      blogPostImage)
+      blogPostImage, imgUrl)
 
     const timestamp = serverTimestamp()
 
@@ -119,14 +169,15 @@ const CreateBlogPost = () => {
       { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
     setLoading(false)
     toast.success('BlogPost Added')
-    navigate(`/blog`)
+    navigate(`/edit-blog-post/${docRef.id}`)
   };
+
 
   return (
     // Container for new blog post
     <>
-      <header className="flex justify-center">
-        <p>Create a BlogPost</p>
+      <header className="text-center">
+        <h2 className="text-4xl inline border-b-4 border-pcCoral">Add a post</h2>
       </header>
       <main className="flex justify-center">
         {/* Card */}
@@ -149,11 +200,6 @@ const CreateBlogPost = () => {
                     className="bg-pcGreen border-pcGreen border-4"
                     onChange={imageChange}
                   />
-                  {/* 'Save file' must be a div - not a button. */}
-                  <div
-                    onClick={storeImage}
-                  // className="hidden"
-                  > Save file.</div>
                   {/* preview selected file */}
                   {selectedImage && (
                     <div className="flex flex-col mt-4 " >
@@ -164,7 +210,6 @@ const CreateBlogPost = () => {
                       />
                     </div>
                   )}
-                  {/* save selected file to Firebase*/}
                 </div>
               </div>
             </div>
@@ -172,7 +217,7 @@ const CreateBlogPost = () => {
             <div className="row">
               {/* Blog title */}
               <div className="mb-6">
-                <label for="title" className="block mb-2 text-sm font-medium ">Title</label>
+                <label htmlFor="title" className="block mb-2 text-sm font-medium ">Title</label>
                 <input
                   type="text"
                   id="blogPostTitle"
@@ -185,7 +230,7 @@ const CreateBlogPost = () => {
             {/* Blog Text */}
             <div className="row">
               <div className="form-group mb-6">
-                <label for="text"
+                <label htmlFor="text"
                   className="block mb-2 text-sm font-medium ">Content</label>
                 <textarea className="block      
                   w-full

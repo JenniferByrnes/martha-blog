@@ -13,7 +13,7 @@ function Gallery({ currentCategory }) {
     <section >
       {/* <h1>{(name)}</h1> */}
       <p className='text-xl'>{description}</p>
-      <PhotoList category={currentCategory.name} />
+      <PhotoList category={currentCategory.name} key={currentCategory.name} />
     </section>
   )
 }
