@@ -12,7 +12,7 @@ const CreateBlogPost = () => {
 
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
-  const [blogPostImage, setBlogPostImage] = useState('');
+  const [blogPostImage1, setBlogPostImage] = useState('');
   const [userRef, setUserRef] = useState('');
 
   const [loading, setLoading] = useState(false)
@@ -72,28 +72,27 @@ const CreateBlogPost = () => {
         getDownloadURL(snapshot.ref).then((url) => {
           console.log("*********** 1st getDownloadURL ************")
           resolve(url)
-          setBlogPostImage((url))
+          setBlogPostImage(url)
           setSelectedImage()
           console.log('blogPostImage=')
-          console.log(blogPostImage)
+          console.log(blogPostImage1)
           console.log('url=')
           console.log(url)
           console.log('imageRef=')
           console.log(imageRef)
-        }
-        );
+        });
       },
         (err) => {
           toast.error('Image not uploaded')
           reject(err)
         },
-        () => {
+        (url) => {
           // download url
           getDownloadURL(uploadBytesResumable.snapshot.ref).then((url) => {
             console.log("*********** 2nd getDownloadURL ************")
             console.log('File available at ', url);
             console.log('blogPostImage=')
-            console.log(blogPostImage)
+            console.log(blogPostImage1)
             console.log('url=')
             console.log(url)
           });
@@ -103,24 +102,32 @@ const CreateBlogPost = () => {
 
   async function handleFormSubmit(e) {
     e.preventDefault()
-    console.log("handleformsubmit")
-    console.log('1blogPostImage=')
-    console.log(blogPostImage)
-    
-    setBlogPostImage(await storeImage())
-    console.log('2blogPostImage=')
-    console.log(blogPostImage)
-    console.log(blogPostTitle, blogPostText,
-      blogPostImage)
+    try {
 
-    const timestamp = serverTimestamp()
-
-    const docRef = addDoc(collection(db, 'blog'),
-      { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
-    setLoading(false)
-    toast.success('BlogPost Added')
-    navigate(`/blog`)
+      
+      // setBlogPostImage(await storeImage())
+      // console.log('2blogPostImage=')
+      // console.log(blogPostImage)
+      // console.log(blogPostTitle, blogPostText,
+      //   blogPostImage)
+        
+        const timestamp = serverTimestamp()
+        const blogPostImage = await storeImage()
+        
+        // console.log("handleformsubmit")
+        // console.log('1blogPostImage=')
+        //  console.log(image)
+        
+      const docRef = await addDoc(collection(db, 'blog'),
+        { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+      setLoading(false)
+      toast.success('BlogPost Added')
+      navigate(`/blog`)
+    } catch (err) {
+      console.log(err)
+    }
   };
+  console.log(blogPostImage1)
 
   return (
     // Container for new blog post
@@ -150,10 +157,10 @@ const CreateBlogPost = () => {
                     onChange={imageChange}
                   />
                   {/* 'Save file' must be a div - not a button. */}
-                  <div
+                  {/* <div
                     onClick={storeImage}
                   // className="hidden"
-                  > Save file.</div>
+                  > Save file.</div> */}
                   {/* preview selected file */}
                   {selectedImage && (
                     <div className="flex flex-col mt-4 " >
