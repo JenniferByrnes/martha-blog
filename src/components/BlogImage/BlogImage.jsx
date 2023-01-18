@@ -18,11 +18,6 @@ export default function BlogImage({ handleImage }) {
     }
   };
 
-  // This function will be triggered when the "Remove This Image" button is clicked
-  const removeSelectedImage = () => {
-    setSelectedImage();
-  };
-
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
   const uploadFile = () => {
@@ -34,7 +29,6 @@ export default function BlogImage({ handleImage }) {
     uploadBytes(imageRef, selectedImage).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         setImageUrls((prev) => [...prev, url]);
-        removeSelectedImage()
       });
 
     },
@@ -73,12 +67,6 @@ export default function BlogImage({ handleImage }) {
             className="max-w-100 max-h-96"
             alt="Thumb"
           />
-          {/* user can choose to remove previewed image */}
-          <div
-            onClick={removeSelectedImage}
-            className="cursor-pointer p-3 mt-5 w-fit mx-auto rounded-full bg-pcGreen"
-          >Changed your mind?
-          </div>
         </div>
       )}
       {/* save selected file to Firebase*/}

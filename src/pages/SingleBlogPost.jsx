@@ -1,51 +1,81 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { QUERY_THOUGHT } from '../utils/queries';
-import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
 import { getAuth } from 'firebase/auth'
+import Spinner from '../components/Spinner'
+import shareIcon from '../assets/svg/shareIcon.svg'
 
-const SingleThought = props => {
+const SingleBlogPost = props => {
+  const [blogPost, setBlogPost] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [shareLinkCopied, setShareLinkCopied] = useState(false)
 
-  // Get token
+  const navigate = useNavigate()
+  const params = useParams()
   const auth = getAuth()
-  const { id: thoughtId } = useParams();
 
-  const { loading, data } = useQuery(QUERY_THOUGHT, {
-    variables: { id: thoughtId }
-  });
+  useEffect(() => {
+    const fetchBlogPost = async () => {
+      // Get the data from the database
+      const docRef = doc(db, 'blog', params.blogPostId)
+      // Get snapshot from the reference
+      const docSnap = await getDoc(docRef)
 
-  const thought = data?.thought || {};
+      // populate the data.
+      if (docSnap.exists()) {
+        setBlogPost(docSnap.data())
+        setLoading(false)
+      }
+    }
+
+    fetchBlogPost()
+  }, [navigate, params.blogPostId])
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner />
   }
 
   return (
     // detail view of one post
     <section className="container mx-auto p-6 ">
+      <div className="fixed flex cursor-pointer top-12 right-6 border-radius-50% z-2" onClick={() => {
+        navigator.clipboard.writeText(window.location.href)
+        setShareLinkCopied(true)
+        setTimeout(() => {
+          setShareLinkCopied(false)
+        }, 2000)
+      }}
+      >
+        <img src={shareIcon} alt="copy link" />
+      </div>
+
+      {shareLinkCopied && <p className='fixed top-12 right-12 z-2'>Link Copied!</p>}
       {/* Card  */}
-      <div className="card mb-3 bg-white shadow-2xl rounded-2xl">
+      <div className="card mb-3 mt-5 bg-white shadow-2xl rounded-2xl">
 
         {/* Card Image */}
-        <img
-          alt="blog inspiration"
-          src={thought.blogPostImage}
-          className="mx-auto "
-        />
+        {/* Check to see if we have an image - if so, display it */}
+        {blogPost.blogPostImage
+          ?
+          <img
+            alt="blog inspiration"
+            src={blogPost.blogPostImage}
+            className="mx-auto bg-white shadow-lg "
+          />
+          : <></>
+        }
         {/* Card Body */}
         <div className="text-center">
-          <p className="text-2xl py-3">{thought.blogPostTitle}</p>
-          <p>{thought.blogPostText}</p>
+          <p className="text-2xl py-3">{blogPost.blogPostTitle}</p>
+          <p>{blogPost.blogPostText}</p>
           <p className="text-start pt-3 italic">
-            {thought.createdAt}
+            {blogPost.createdAt}
           </p>
         </div>
       </div>
-      {auth.loggedIn()}
     </section>
   );
 };
 
-export default SingleThought;
+export default SingleBlogPost;
