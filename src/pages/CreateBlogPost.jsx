@@ -5,14 +5,13 @@ import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
-import { ref, uploadBytesResumable, getDownloadURL, getStorage } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { v4 } from "uuid";
 
 const CreateBlogPost = () => {
 
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
-  const [blogPostImage1, setBlogPostImage] = useState('');
   const [userRef, setUserRef] = useState('');
 
   const [loading, setLoading] = useState(false)
@@ -60,7 +59,6 @@ const CreateBlogPost = () => {
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
   async function storeImage() {
-    console.log("***********in storeImage()************")
     if (!selectedImage) return;
 
     return new Promise((resolve, reject) => {
@@ -68,57 +66,31 @@ const CreateBlogPost = () => {
       // add characters to the filename to make it unique with v4
       const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
       // pass in the location and the image
-      uploadBytesResumable(imageRef, selectedImage).then((snapshot) => {
+      uploadBytes(imageRef, selectedImage).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
-          console.log("*********** 1st getDownloadURL ************")
           resolve(url)
-          setBlogPostImage(url)
           setSelectedImage()
-          console.log('blogPostImage=')
-          console.log(blogPostImage1)
-          console.log('url=')
-          console.log(url)
-          console.log('imageRef=')
-          console.log(imageRef)
         });
       },
         (err) => {
           toast.error('Image not uploaded')
           reject(err)
-        },
-        (url) => {
-          // download url
-          getDownloadURL(uploadBytesResumable.snapshot.ref).then((url) => {
-            console.log("*********** 2nd getDownloadURL ************")
-            console.log('File available at ', url);
-            console.log('blogPostImage=')
-            console.log(blogPostImage1)
-            console.log('url=')
-            console.log(url)
-          });
-        });
+        }
+      );
     })
   };
 
   async function handleFormSubmit(e) {
     e.preventDefault()
     try {
+      const timestamp = serverTimestamp()
+      // Store the image and get the url
+      const blogPostImage = await storeImage()
 
-      
-      // setBlogPostImage(await storeImage())
-      // console.log('2blogPostImage=')
-      // console.log(blogPostImage)
-      // console.log(blogPostTitle, blogPostText,
-      //   blogPostImage)
-        
-        const timestamp = serverTimestamp()
-        const blogPostImage = await storeImage()
-        
-        // console.log("handleformsubmit")
-        // console.log('1blogPostImage=')
-        //  console.log(image)
-        
-      const docRef = await addDoc(collection(db, 'blog'),
+      // Store the record into the collection
+      // The names used here are the field names for the collection
+      // Await is needed for the storeImage to complete.
+      await addDoc(collection(db, 'blog'),
         { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
       setLoading(false)
       toast.success('BlogPost Added')
@@ -127,13 +99,14 @@ const CreateBlogPost = () => {
       console.log(err)
     }
   };
-  console.log(blogPostImage1)
 
   return (
     // Container for new blog post
     <>
       <header className="flex justify-center">
-        <p>Create a BlogPost</p>
+      <div className="text-center">
+        <h2 className="text-4xl inline border-b-4 border-pcCoral">Create New Post</h2>
+      </div>
       </header>
       <main className="flex justify-center">
         {/* Card */}
@@ -156,11 +129,6 @@ const CreateBlogPost = () => {
                     className="bg-pcGreen border-pcGreen border-4"
                     onChange={imageChange}
                   />
-                  {/* 'Save file' must be a div - not a button. */}
-                  {/* <div
-                    onClick={storeImage}
-                  // className="hidden"
-                  > Save file.</div> */}
                   {/* preview selected file */}
                   {selectedImage && (
                     <div className="flex flex-col mt-4 " >
@@ -171,7 +139,6 @@ const CreateBlogPost = () => {
                       />
                     </div>
                   )}
-                  {/* save selected file to Firebase*/}
                 </div>
               </div>
             </div>
@@ -179,7 +146,7 @@ const CreateBlogPost = () => {
             <div className="row">
               {/* Blog title */}
               <div className="mb-6">
-                <label for="title" className="block mb-2 text-sm font-medium ">Title</label>
+                <label htmlFor="title" className="block mb-2 text-sm font-medium ">Title</label>
                 <input
                   type="text"
                   id="blogPostTitle"
@@ -192,7 +159,7 @@ const CreateBlogPost = () => {
             {/* Blog Text */}
             <div className="row">
               <div className="form-group mb-6">
-                <label for="text"
+                <label htmlFor="text"
                   className="block mb-2 text-sm font-medium ">Content</label>
                 <textarea className="block      
                   w-full
@@ -214,7 +181,6 @@ const CreateBlogPost = () => {
           </form>
         </div >
       </main>
-
     </ >
   );
 };

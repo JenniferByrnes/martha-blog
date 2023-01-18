@@ -134,6 +134,7 @@ const Blog = () => {
                   <BlogList
                     blogPost={blogPost.data}
                     id={blogPost.id}
+                    key={blogPost.id}
                   />
                 ))}
               </ul>

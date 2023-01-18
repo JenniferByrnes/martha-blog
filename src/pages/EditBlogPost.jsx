@@ -206,10 +206,12 @@ const EditBlogPost = () => {
   };
 
   return (
-    // Container for new blog post
+    // Container for editing the post
     <>
       <header className="flex justify-center">
-        <p>Edit a BlogPost</p>
+      <div className="text-center">
+        <h2 className="text-4xl inline border-b-4 border-pcCoral">Edit a Post</h2>
+      </div>
       </header>
       <main className="flex justify-center">
         {/* Card */}
