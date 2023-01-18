@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
 import { ReactComponent as EditIcon } from '../assets/svg/editIcon.svg'
 
@@ -13,20 +13,26 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
         {/* Card */}
         <div className="w-full m-1">
           {/* Card links to expanded blog post */}
-          <Link className="group flex flex-col relative md:flex-row items-center shadow-2xl md:max-w-full rounded-2xl bg-white"
-            to={`/single-blog-post/${id}`}
-            style={{
-              textDecoration: 'none'
-            }}
+          <div className="group flex flex-col relative md:flex-row items-center shadow-2xl md:max-w-full rounded-2xl bg-white"
+ 
           >
             {/* Optional Image - hidden if non-existant */}
+            <NavLink to={`/single-blog-post/${id}`}
+            style={{
+              textDecoration: 'none'
+            }}>
             <img className={blogPost.blogPostImage ? "object-cover md:w-48 md:h-48 mt-2 md:mt-0 rounded-t-lg md:rounded-none md:rounded-l-lg" : 'hidden'}
               alt="Inspiration"
               src={blogPost.blogPostImage}
               width='96px'
               height='96px'
             />
+            </NavLink>
             {/* Blog post text */}
+            <NavLink to={`/single-blog-post/${id}`}
+            style={{
+              textDecoration: 'none'
+            }}>
             <div className="group-hover:text-blue-500 p-2 md:p-6 flex flex-col items-center md:items-start">
               {/* Blog post title */}
               <h5 className="group-hover:text-blue-500 text-gray-900 text-xl font-medium mb-2">
@@ -40,22 +46,22 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
               {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
               {blogPost.timestamp}
             </p> */}
-
-              <div className='absolute top-0 right-2'>
-                {onDelete && (
-                  <DeleteIcon
-                    className='removeIcon'
-                    fill='rgb(231, 76,60)'
-                    onClick={() => onDelete(blogPost.id, blogPost.name)}
-                  />
-                )}
-                {onEdit &&
-                  <EditIcon
-                    className='editIcon'
-                    onClick={() => onEdit(id)} />}
-              </div>
             </div>
-          </Link>
+            </NavLink>
+            <div className='absolute top-0 right-2 z-20'>
+              {onDelete && (
+                <DeleteIcon
+                  className='removeIcon'
+                  fill='rgb(231, 76,60)'
+                  onClick={() => onDelete(blogPost.id, blogPost.name)}
+                />
+              )}
+              {onEdit &&
+                <EditIcon
+                  className='editIcon'
+                  onClick={() => onEdit(id)} />}
+            </div>
+          </div>
         </div>
       </li>
     </>

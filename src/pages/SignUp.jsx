@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { Link, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 //import OAuth from '../components/OAuth'
@@ -119,7 +119,7 @@ export default function SignUp() {
 
                   <button type="submit" className="form-button">Submit</button>
 
-                  <button type="submit" className="form-button"><Link to="/login">Login instead?</Link></button>
+                  <button type="submit" className="form-button"><NavLink to="/login">Login instead?</NavLink></button>
                 </div>
               </form>
 

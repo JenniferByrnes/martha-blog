@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { toast } from 'react-toastify'
 
@@ -39,9 +39,9 @@ export default function ForgotPassword() {
                 onChange={onChange}
               />
               <button type="button" className="form-button">
-                <Link to='/login'>
+                <NavLink to='/login'>
                   Login
-                </Link>
+                </NavLink>
               </button>
 
               <div>

@@ -1,6 +1,6 @@
-import { getAuth, updateProfile } from 'firebase/auth'
+import { getAuth, updateEmail, updateProfile } from 'firebase/auth'
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 import {
   updateDoc,
   doc,
@@ -36,26 +36,33 @@ export default function Profile() {
     navigate('/')
   }
 
-  // TODO - this does not update the email.  Needs to happen in auth and Firestore db
   const onSubmit = async () => {
     try {
-      if (auth.currentUser.displayName !== username) {
-        //Update display name in Firebase
-        await updateProfile(auth.currentUser, {
+      auth.currentUser.displayName !== username &&
+        (await updateProfile(auth.currentUser, {
           displayName: username
-        })
-        // Update in Firestore
-        const userRef = doc(db, 'users', auth.currentUser.uid)
-        await updateDoc(userRef, {
-          username: username
-        })
-
-      }
+        }));
+ 
+      auth.currentUser.email !== email &&
+        (await updateEmail(auth.currentUser, email));
+ 
+      const useRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(useRef, {
+        username,
+        email
+      });
     } catch (error) {
-      console.log(error)
-      toast.error('Could not update profile details')
+      toast.error('Could not update profile details');
     }
-  }
+    toast.success("Profile updated");
+  };
+ 
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value
+    }));
+  };
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -88,13 +95,6 @@ export default function Profile() {
     fetchBlogPosts()
   }, [])
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.id]: e.target.value,
-    }))
-  }
-
   const onDelete = async (blogPostId) => {
     if (window.confirm('Are you sure you want to delete?')) {
       await deleteDoc(doc(db, 'blog', blogPostId))
@@ -125,9 +125,9 @@ export default function Profile() {
           <div className="form-container ">
             <div className="form-inner-container ">
               <button type='button' className="form-button">
-                <Link
+                <NavLink
                   to='/create-post'>Create new post
-                </Link>
+                </NavLink>
               </button>
               <br />
               <button type='button' className="form-button"
@@ -139,7 +139,7 @@ export default function Profile() {
                   {/* Make text appear changeable when available */}
                   <input type="text"
                     id='username'
-                    className={!changeDetails ? 'bg-pcGreen' : ''}
+                    className={!changeDetails ? 'bg-pcGreen' : 'border-8 border-double border-pcGreen'}
                     disabled={!changeDetails}
                     value={username}
                     onChange={onChange}
@@ -147,7 +147,7 @@ export default function Profile() {
                   <label htmlFor="email" className="block text-sm font-medium ">Your email</label>
                   <input type="email"
                     id='email'
-                    className='bg-pcGreen mb-20'
+                    className={!changeDetails ? 'bg-pcGreen' : 'border-8 border-double border-pcGreen'}
                     disabled={!changeDetails}
                     value={email}
                     onChange={onChange}
