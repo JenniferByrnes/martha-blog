@@ -91,14 +91,9 @@ const CreateBlogPost = () => {
       if (selectedImageObj.name) {
 
         return new Promise((resolve, reject) => {
-          console.log("**** IN Promise ****")
-          console.log("JKB selectedImage=")
-          console.log(selectedImageObj)
+
           const storage = getStorage()
-          console.log("JKB storage=")
-          console.log(storage)
-          console.log("JKB selectedImage.name=")
-          console.log(selectedImageObj.name)
+
           // add characters to the filename to make it unique with v4
           const imageRef = ref(storage, `blogImages/${selectedImageObj.name + v4()}`);
           console.log("JKB imageRef=")
@@ -130,17 +125,9 @@ const CreateBlogPost = () => {
             () => {
               // Handle successful uploads on complete
               // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-
               getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 resolve(url)
-                setBlogPostImage((url))
                 setSelectedImage('')
-                console.log('blogPostImage=')
-                console.log(blogPostImage)
-                console.log('url=')
-                console.log(url)
-                console.log('imageRef=')
-                console.log(imageRef)
               });
 
             },
