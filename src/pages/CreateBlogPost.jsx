@@ -84,27 +84,27 @@ const CreateBlogPost = () => {
 
     console.log("JKB handleformsubmit")
 
-    const storeImage = async (selectedImage) => {
+    const storeImage = (selectedImageObj) => {
       console.log("**** IN storeImage ****")
       console.log("JKB selectedImage=")
-      console.log(selectedImage)
-      if (selectedImage.name) {
+      console.log(selectedImageObj)
+      if (selectedImageObj.name) {
 
         return new Promise((resolve, reject) => {
           console.log("**** IN Promise ****")
           console.log("JKB selectedImage=")
-          console.log(selectedImage)
+          console.log(selectedImageObj)
           const storage = getStorage()
           console.log("JKB storage=")
           console.log(storage)
           console.log("JKB selectedImage.name=")
-          console.log(selectedImage.name)
+          console.log(selectedImageObj.name)
           // add characters to the filename to make it unique with v4
-          const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
+          const imageRef = ref(storage, `blogImages/${selectedImageObj.name + v4()}`);
           console.log("JKB imageRef=")
           console.log(imageRef)
           // pass in the location and the image
-          const uploadTask = uploadBytesResumable(imageRef, selectedImage)
+          const uploadTask = uploadBytesResumable(imageRef, selectedImageObj)
 
           // Code from Firebase Storage docs
           uploadTask.on(
