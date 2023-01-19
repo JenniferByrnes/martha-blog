@@ -90,8 +90,13 @@ const CreateBlogPost = () => {
       // Store the record into the collection
       // The names used here are the field names for the collection
       // Await is needed for the storeImage to complete.
+      if (blogPostImage) {
       await addDoc(collection(db, 'blog'),
         { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+      } else {
+        await addDoc(collection(db, 'blog'),
+        { blogPostTitle, blogPostText, userRef, timestamp })
+      }
       setLoading(false)
       toast.success('BlogPost Added')
       navigate(`/blog`)

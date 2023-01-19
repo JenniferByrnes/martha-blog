@@ -13,7 +13,7 @@ const EditBlogPost = () => {
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
   const [blogPostOldImage, setBlogPostOldImage] = useState('');
-  const [blogPost, setBlogPost] = useState('');
+  // const [blogPost, setBlogPost] = useState('');
   const [userRef, setUserRef] = useState('');
 
   const [loading, setLoading] = useState(false)
@@ -55,7 +55,7 @@ const EditBlogPost = () => {
       const docRef = doc(db, 'blog', params.blogPostId)
       const docSnap = await getDoc(docRef)
       if(docSnap.exists()) {
-        setBlogPost(docSnap.data())
+        // setBlogPost(docSnap.data())
         setBlogPostText(docSnap.data().blogPostText)
         setBlogPostTitle(docSnap.data().blogPostTitle)
         setBlogPostOldImage(docSnap.data().blogPostImage)
@@ -67,9 +67,6 @@ const EditBlogPost = () => {
     }
     fetchBlogPost()
       }, [params.blogPostId, navigate])
-
-      console.log('***********blogPost=**************')
-      console.log(blogPost)
 
   if (loading) {
     return <Spinner />
@@ -86,6 +83,7 @@ const EditBlogPost = () => {
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
   async function storeImage() {
+    // Return old image if no new one is selected.
     if (!selectedImage) return blogPostOldImage;
 
     return new Promise((resolve, reject) => {
@@ -112,14 +110,17 @@ const EditBlogPost = () => {
     try {
       const timestamp = serverTimestamp()
       // Store the image and get the url
-      
       const blogPostImage = await storeImage()
 
       // Store the record into the collection
       // The names used here are the field names for the collection
       // Await is needed for the storeImage to complete.
       const docRef = doc(db, 'blog', params.blogPostId)
+      if (blogPostImage) {
       await updateDoc(docRef, { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+      } else {
+        await updateDoc(docRef, { blogPostTitle, blogPostText, userRef, timestamp })
+      }
       setLoading(false)
       toast.success('BlogPost Updated')
       navigate(`/blog`)

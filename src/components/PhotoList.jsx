@@ -100,19 +100,18 @@ const PhotoList = ({ category }) => {
     <div className="max-w-6xl mx-auto">
       {/* Modal if needed */}
       {isModalOpen && (
-        <Modal currentPhoto={currentPhoto} onClose={toggleModal} />
+        <Modal currentPhoto={currentPhoto} onClose={toggleModal}/>
       )}
       {/* Photos by category */}
       <div className="flex flex-col justify-center content-center md:flex-row md:flex-wrap max-w-full ">
         {currentPhotos.map((image, i) => (
-          <section className="py-4 px-2 mx-auto justify-center content-center ">
+          <section key={image.name} className="py-4 px-2 mx-auto justify-center content-center ">
             <div className="flex flex-col items-center w-96 max-w-xs rounded-xl shadow-2xl drop-shadow-2xl ">
               <img
                 src={require(`../assets/images/${category}/${i}.webp`)}
                 alt={image.name}
                 className="mx-1"
                 onClick={() => toggleModal(image, i)}
-                key={image.name}
               />
               <span className='px-3 py-1 text-xl'>{image.name}</span>
               <span className='px-3 py-1'>{image.description}</span>
