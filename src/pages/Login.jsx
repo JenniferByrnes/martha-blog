@@ -38,7 +38,7 @@ export default function Login() {
 
       // If success, navigate home
       if (userCredential.user) {
-        navigate('/')
+        navigate(`/profile`)
       }
     } catch (error) {
       toast.error('Bad User Credentials')

@@ -11,15 +11,7 @@ export default function Navbar() {
   const userClick = () => setNav(!nav)
   const navigate = useNavigate()
   const auth = getAuth()
-  const { loggedIn, checkingStatus } = useAuthStatus()
-
-  // const location = useLocation()
-
-  // const pathMatchRoute = (route) => {
-  //   if(route === location.pathname) {
-  //     return true
-  //   }
-  // }
+  const { loggedIn } = useAuthStatus()
 
   const logout = event => {
     // TODO - this should cause a re-render of the NavBar
@@ -63,9 +55,9 @@ export default function Navbar() {
                 <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                   <NavLink to="/login">Login</NavLink>
                 </li>
-                <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
+                {/* <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
                   <NavLink to="/sign-up">Sign Up</NavLink>
-                </li>
+                </li> */}
               </>)}
           </ul>
 
@@ -108,7 +100,6 @@ export default function Navbar() {
               <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                 to="/contact" >Contact</NavLink>
 
-
               {/* Logged in user sees Logout option, otherwise Login/Signin option */}
               {loggedIn ? (
                 <li className="">
@@ -119,7 +110,7 @@ export default function Navbar() {
                 <>
                   <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                     to="/login" >Login</NavLink>
-                  <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral" to="/sign-up" >Sign Up</NavLink>
+                  {/* <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral" to="/sign-up" >Sign Up</NavLink> */}
                 </>
               )}
             </ul>

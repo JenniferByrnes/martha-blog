@@ -33,7 +33,7 @@ export default function Profile() {
 
   const onLogout = () => {
     auth.signOut()
-    navigate('/')
+    navigate(`/blog`)
   }
 
   const onSubmit = async () => {
@@ -102,7 +102,7 @@ export default function Profile() {
         (blogPost) => blogPost.id !== blogPostId
       )
       setBlogPosts(updatedBlogPost)
-      navigate('/profile')
+      navigate(`/profile`)
       toast.success('Successfully deleted post')
     }
   }
@@ -177,7 +177,6 @@ export default function Profile() {
                   onEdit={() => onEdit(blogPost.id)}
                 />
               ))}
-
             </ul>
           </div>
         )}
