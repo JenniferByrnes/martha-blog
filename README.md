@@ -7,22 +7,18 @@ Martha's blog is a multi-page React Application that provides a place for a sing
 
 ## Built with:
 
-FERN stack
-
 ![Firebase](https://img.shields.io/badge/-Firebase-orange?style=for-the-badge&logo=firebase)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
-![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-
-
 
 ## Description:
 
-A specialized app for one person's use.  Hopefully many wonderful blog posts and lovely photos will be stored with this app.  It began as a MERN stack blog and static photo app.  I combined the two and as I added images to the blog posts, needed to store them in Firebase storage.  Once I was using Firebase storeage, I needed Firebase authentication and it made sense to move the collection all over to Firebase to keep them together.  Only primary user can add/edit/delete posts, so please look at the screen shots to see that functionality.  The primary user has not decided upon some of the cosmetic features of the site, so those are open for change.  The functionality/menus/links for the blog and photos are all present and working.
+A specialized app for one person's use.  Hopefully many wonderful blog posts and lovely photos will be stored with this app.  It began as a MERN stack blog and static photo app.  I combined the two and as I added images to the blog posts, needed to store them in Firebase storage.  Once I was using Firebase storeage, I needed Firebase authentication and it made sense to move the collection all over to Firebase to keep them together.  Only the primary user can add/edit/delete posts, so please look at the screen shots to see that functionality.  The primary user has not decided upon some of the cosmetic features of the site, so those are open for change.  The functionality/menus/links for the blog and photos are all present and working.
 
 A fully functional version is available [here](https://martha-blog.vercel.app/)
 
@@ -63,15 +59,15 @@ This is a combination blog/photo space for my friend, Martha.  The photos showca
 
 ## Visuals
 
-<img src="./client/src/assets/readme/home.png">
-<img src="./client/src/assets/readme/photo-home.png">
-<img src="./client/src/assets/readme/blog-home.png">
-<img src="./client/src/assets/readme/blog-admin.png">
-<img src="./client/src/assets/readme/blog-new.png">
-<img src="./client/src/assets/readme/log-in.png">
-<img src="./client/src/assets/readme/sign-up.png">
-<img src="./client/src/assets/readme/contact-form.png">
-<img src="./client/src/assets/readme/phone-size.png">
+<img src="./src/assets/readme/home.png">
+<img src="./src/assets/readme/photo-home.png">
+<img src="./src/assets/readme/blog-home.png">
+<img src="./src/assets/readme/blog-admin.png">
+<img src="./src/assets/readme/blog-new.png">
+<img src="./src/assets/readme/log-in.png">
+<img src="./src/assets/readme/sign-up.png">
+<img src="./src/assets/readme/contact-form.png">
+<img src="./src/assets/readme/phone-size.png">
 
 ## License
 
@@ -95,4 +91,4 @@ No tests.
 
 Check out the creators's Github links here:
 
-[Github Jennifer Byrnes](https://github.com/JenniferByrnes)\
+[Github Jennifer Byrnes](https://github.com/JenniferByrnes)
