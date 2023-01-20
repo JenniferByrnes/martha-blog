@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
-import { getAuth } from 'firebase/auth'
 import Spinner from '../components/Spinner'
 import shareIcon from '../assets/svg/shareIcon.svg'
 
@@ -13,7 +12,6 @@ const SingleBlogPost = props => {
 
   const navigate = useNavigate()
   const params = useParams()
-  const auth = getAuth()
 
   useEffect(() => {
     const fetchBlogPost = async () => {

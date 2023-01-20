@@ -5,51 +5,33 @@ import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
-import { ref, uploadBytesResumable, getDownloadURL, getStorage } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { v4 } from "uuid";
 
 const EditBlogPost = () => {
+
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
-  const [blogPostImage, setBlogPostImage] = useState('');
+  const [blogPostOldImage, setBlogPostOldImage] = useState('');
+  // const [blogPost, setBlogPost] = useState('');
   const [userRef, setUserRef] = useState('');
 
   const [loading, setLoading] = useState(false)
-  const [blogPost, setBlogPost] = useState(false)
-
-  const params = useParams()
 
   const auth = getAuth()
   const navigate = useNavigate()
+  const params = useParams()
   const isMounted = useRef(true)
 
   const [selectedImage, setSelectedImage] = useState();
-  const [selectedImageName, setSelectedImageName] = useState();
-
-  // Get the single blog post to edit from the database
-  useEffect(() => {
-    setLoading(true)
-    // Fetch blog post to edit
-    const fetchBlogPost = async () => {
-      const docRef = doc(db, 'blog', params.blogPostId)
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        setBlogPost(docSnap.data())
-        setBlogPostText(docSnap.data());
-        setBlogPostTitle(docSnap.data());
-        setBlogPostImage(docSnap.data());
-        setLoading(false)
-
-      } else {
-        navigate('/')
-        toast.error('Post does not exist.')
-      }
+  // This function will be triggered when the 'file' field changes
+  const imageChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
     }
-    fetchBlogPost()
-  }, [params.blogPostId, navigate])
+  };
 
-
-  // Only Auth users should be on this page.
+  // Sets userRef to logged in User
   useEffect(() => {
     if (isMounted) {
       onAuthStateChanged(auth, (user) => {
@@ -66,6 +48,26 @@ const EditBlogPost = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted])
 
+  // Fetch blogPost to edit
+  useEffect(() => {
+    setLoading(true)
+    const fetchBlogPost = async () => {
+      const docRef = doc(db, 'blog', params.blogPostId)
+      const docSnap = await getDoc(docRef)
+      if(docSnap.exists()) {
+        // setBlogPost(docSnap.data())
+        setBlogPostText(docSnap.data().blogPostText)
+        setBlogPostTitle(docSnap.data().blogPostTitle)
+        setBlogPostOldImage(docSnap.data().blogPostImage)
+        setLoading(false)
+      } else {
+        navigate('/')
+        toast.error('Listing does not exist')
+      }
+    }
+    fetchBlogPost()
+      }, [params.blogPostId, navigate])
+
   if (loading) {
     return <Spinner />
   }
@@ -78,138 +80,62 @@ const EditBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
-  // When the 'file' field changes, image should be displayed.
-  const imageChange = (event) => {
-    if (event.target.files && event.target.files.length > 0) {
-      // TODO these next two statements do not work
-      setSelectedImage(event.target.files[0]);
-      setSelectedImageName(event.target.files[0].name)
-      console.log("****** INSIDE IF STATEMENT*****")
-
-      console.log("JKB imageChange event.target.files[0].name=")
-      console.log(event.target.files[0].name)
-      console.log("JKB imageChange event.target.value=")
-      console.log(event.target.value)
-
-      console.log("JKB imageChange selectedImage=")
-      console.log(selectedImage)
-      console.log("JKB imageChange selectedImageName=")
-      console.log(selectedImageName)
-
-    }
-  };
-
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
-  const handleFormSubmit = async (e) => {
+  async function storeImage() {
+    // Return old image if no new one is selected.
+    if (!selectedImage) return blogPostOldImage;
+
+    return new Promise((resolve, reject) => {
+      const storage = getStorage()
+      // add characters to the filename to make it unique with v4
+      const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
+      // pass in the location and the image
+      uploadBytes(imageRef, selectedImage).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          resolve(url)
+          setSelectedImage()
+        });
+      },
+        (err) => {
+          toast.error('Image not uploaded')
+          reject(err)
+        }
+      );
+    })
+  };
+
+  async function handleFormSubmit(e) {
     e.preventDefault()
+    try {
+      const timestamp = serverTimestamp()
+      // Store the image and get the url
+      const blogPostImage = await storeImage()
 
-    setLoading(true)
-
-    console.log("JKB handleformsubmit")
-
-    const storeImage = async (selectedImage) => {
-      console.log("**** IN storeImage ****")
-      console.log("JKB selectedImage=")
-      console.log(selectedImage)
-      if (selectedImage.name) {
-
-        return new Promise((resolve, reject) => {
-          console.log("**** IN Promise ****")
-          console.log("JKB selectedImage=")
-          console.log(selectedImage)
-          const storage = getStorage()
-          console.log("JKB storage=")
-          console.log(storage)
-          console.log("JKB selectedImage.name=")
-          console.log(selectedImage.name)
-          // add characters to the filename to make it unique with v4
-          const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
-          console.log("JKB imageRef=")
-          console.log(imageRef)
-          // pass in the location and the image
-          const uploadTask = uploadBytesResumable(imageRef, selectedImage)
-
-          // Code from Firebase Storage docs
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-              const progress =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              console.log('Upload is ' + progress + '% done')
-              switch (snapshot.state) {
-                case 'paused':
-                  console.log('Upload is paused')
-                  break
-                case 'running':
-                  console.log('Upload is running')
-                  break
-                default:
-                  break
-              }
-            },
-            (error) => {
-              reject(error)
-            },
-            () => {
-              // Handle successful uploads on complete
-              // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-
-              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                resolve(url)
-                setBlogPostImage((url))
-                setSelectedImage('')
-                console.log('blogPostImage=')
-                console.log(blogPostImage)
-                console.log('url=')
-                console.log(url)
-                console.log('imageRef=')
-                console.log(imageRef)
-              });
-
-            },
-            (err) => {
-              reject(err)
-            },
-            () => {
-              // download url
-              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                console.log('File available at ', url);
-                console.log('blogPostImage=')
-                console.log(blogPostImage)
-                console.log('url=')
-                console.log(url)
-              });
-            });
-        })
+      // Store the record into the collection
+      // The names used here are the field names for the collection
+      // Await is needed for the storeImage to complete.
+      const docRef = doc(db, 'blog', params.blogPostId)
+      if (blogPostImage) {
+      await updateDoc(docRef, { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+      } else {
+        await updateDoc(docRef, { blogPostTitle, blogPostText, userRef, timestamp })
       }
-    };
-
-    const imgUrl = await new Promise((image) => storeImage(image))
-      .catch(() => {
-        setLoading(false)
-        toast.error('Image not uploaded')
-        return
-      })
-
-    console.log(blogPostTitle, blogPostText,
-      blogPostImage)
-
-    const timestamp = serverTimestamp()
-
-    // Update post
-    const docRef = doc(db, 'blog', params.blogPostId)
-    await updateDoc( blogPostTitle, blogPostText, blogPostImage, userRef, timestamp )
-    setLoading(false)
-    toast.success('BlogPost edited')
-    navigate(`/blog`)
+      setLoading(false)
+      toast.success('BlogPost Updated')
+      navigate(`/blog`)
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
     // Container for new blog post
     <>
       <header className="flex justify-center">
-        <p>Edit a BlogPost</p>
+      <div className="text-center">
+        <h2 className="text-4xl inline border-b-4 border-pcCoral">Edit Post</h2>
+      </div>
       </header>
       <main className="flex justify-center">
         {/* Card */}
@@ -232,11 +158,6 @@ const EditBlogPost = () => {
                     className="bg-pcGreen border-pcGreen border-4"
                     onChange={imageChange}
                   />
-                  {/* 'Save file' must be a div - not a button. */}
-                  <div
-                    // onClick={storeImage}
-                    className="hidden"
-                  > Save file.</div>
                   {/* preview selected file */}
                   {selectedImage && (
                     <div className="flex flex-col mt-4 " >
@@ -247,7 +168,6 @@ const EditBlogPost = () => {
                       />
                     </div>
                   )}
-                  {/* save selected file to Firebase*/}
                 </div>
               </div>
             </div>
@@ -290,7 +210,6 @@ const EditBlogPost = () => {
           </form>
         </div >
       </main>
-
     </ >
   );
 };

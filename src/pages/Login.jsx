@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { Link, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import image from '../assets/jpg/purpleflowers.jpeg'
@@ -89,15 +89,15 @@ export default function Login() {
                   />
                 </div>
 
-                <Link to='/forgot-password' className='bg-pcGreen'>
+                <NavLink to='/forgot-password' className='bg-pcGreen'>
                   Forgot Password
-                </Link>
+                </NavLink>
 
                 <div className="flex items-center justify-evenly space-x-2">
 
                   <button type="submit" className="form-button">Submit</button>
 
-                  <button type="submit" className="form-button"><Link to="/sign-up">Sign Up?</Link></button>
+                  <button type="submit" className="form-button"><NavLink to="/sign-up">Sign Up?</NavLink></button>
                 </div>
                 {/* <div className='signInBar'>
                   <p className='signInText'>Sign In</p>

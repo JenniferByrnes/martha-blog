@@ -24,8 +24,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/blog' element={<Blog />} />
-          <Route path='/edit-blog-post/:blogPostId' element={<EditBlogPost />} />
           <Route path='/single-blog-post/:blogPostId' element={<SingleBlogPost />} />
+          <Route path='/edit-blog-post/:blogPostId' element={<EditBlogPost />} />
           <Route path='/create-post' element={<CreateBlogPost />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           {/* Nested route to direct based on Auth status */}

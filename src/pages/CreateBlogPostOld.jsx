@@ -57,21 +57,7 @@ const CreateBlogPost = () => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedImage(event.target.files[0]);
       setSelectedImageName(event.target.files[0].name)
-      console.log("****** INSIDE IF STATEMENT*****")
-
-      console.log("JKB imageChange event.target.files[0].name=")
-      console.log(event.target.files[0].name)
-      console.log("JKB imageChange event.target.value=")
-      console.log(event.target.value)
-
-      console.log("JKB imageChange selectedImage=")
-      console.log(selectedImage)
-      console.log("JKB imageChange selectedImageName=")
-      console.log(selectedImageName)
-
-      setSelectedImageName("fred")
-      console.log("JKB imageChange selectedImageNamevalue=")
-      console.log(selectedImageName)
+ 
     }
   };
 
@@ -82,29 +68,20 @@ const CreateBlogPost = () => {
 
     setLoading(true)
 
-    console.log("JKB handleformsubmit")
 
-    const storeImage = async (selectedImage) => {
-      console.log("**** IN storeImage ****")
-      console.log("JKB selectedImage=")
-      console.log(selectedImage)
-      if (selectedImage.name) {
+    const storeImage = (selectedImageObj) => {
+  
+      if (selectedImageObj.name) {
 
         return new Promise((resolve, reject) => {
-          console.log("**** IN Promise ****")
-          console.log("JKB selectedImage=")
-          console.log(selectedImage)
+
           const storage = getStorage()
-          console.log("JKB storage=")
-          console.log(storage)
-          console.log("JKB selectedImage.name=")
-          console.log(selectedImage.name)
+
           // add characters to the filename to make it unique with v4
-          const imageRef = ref(storage, `blogImages/${selectedImage.name + v4()}`);
-          console.log("JKB imageRef=")
-          console.log(imageRef)
+          const imageRef = ref(storage, `blogImages/${selectedImageObj.name + v4()}`);
+     
           // pass in the location and the image
-          const uploadTask = uploadBytesResumable(imageRef, selectedImage)
+          const uploadTask = uploadBytesResumable(imageRef, selectedImageObj)
 
           // Code from Firebase Storage docs
           uploadTask.on(
@@ -130,17 +107,9 @@ const CreateBlogPost = () => {
             () => {
               // Handle successful uploads on complete
               // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-
               getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 resolve(url)
-                setBlogPostImage((url))
                 setSelectedImage('')
-                console.log('blogPostImage=')
-                console.log(blogPostImage)
-                console.log('url=')
-                console.log(url)
-                console.log('imageRef=')
-                console.log(imageRef)
               });
 
             },
@@ -171,7 +140,6 @@ const CreateBlogPost = () => {
     toast.success('BlogPost Added')
     navigate(`/edit-blog-post/${docRef.id}`)
   };
-
 
   return (
     // Container for new blog post
@@ -252,7 +220,6 @@ const CreateBlogPost = () => {
           </form>
         </div >
       </main>
-
     </ >
   );
 };
