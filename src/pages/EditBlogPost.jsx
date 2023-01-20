@@ -62,7 +62,7 @@ const EditBlogPost = () => {
         setLoading(false)
       } else {
         navigate('/')
-        toast.error('Listing does not exist')
+        toast.error('Blog post does not exist')
       }
     }
     fetchBlogPost()
