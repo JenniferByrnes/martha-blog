@@ -192,6 +192,7 @@ const EditBlogPost = () => {
                   className="block mb-2 text-sm font-medium ">Content</label>
                 <textarea className="block      
                   w-full
+                  whitespace-pre-wrap
                   bg-clip-padding
                   border-2 border-pcGreen p-3 mb-4 
                   focus: outline-pcGreen

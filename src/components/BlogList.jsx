@@ -40,7 +40,7 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
               </h5>
               {/* Blog post body */}
               {/* TODO - get elipsis working for overflow text. */}
-              <p className="inline-block group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText} ...</p>
+              <p className="inline-block whitespace-pre-wrap group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText} ...</p>
 
               {/* Blog post footer (TODO - this doesn't work - "key" problem */}
               {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
