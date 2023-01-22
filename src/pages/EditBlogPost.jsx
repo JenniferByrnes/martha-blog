@@ -54,7 +54,7 @@ const EditBlogPost = () => {
     const fetchBlogPost = async () => {
       const docRef = doc(db, 'blog', params.blogPostId)
       const docSnap = await getDoc(docRef)
-      if(docSnap.exists()) {
+      if (docSnap.exists()) {
         // setBlogPost(docSnap.data())
         setBlogPostText(docSnap.data().blogPostText)
         setBlogPostTitle(docSnap.data().blogPostTitle)
@@ -66,7 +66,7 @@ const EditBlogPost = () => {
       }
     }
     fetchBlogPost()
-      }, [params.blogPostId, navigate])
+  }, [params.blogPostId, navigate])
 
   if (loading) {
     return <Spinner />
@@ -117,7 +117,7 @@ const EditBlogPost = () => {
       // Await is needed for the storeImage to complete.
       const docRef = doc(db, 'blog', params.blogPostId)
       if (blogPostImage) {
-      await updateDoc(docRef, { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+        await updateDoc(docRef, { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
       } else {
         await updateDoc(docRef, { blogPostTitle, blogPostText, userRef, timestamp })
       }
@@ -133,9 +133,9 @@ const EditBlogPost = () => {
     // Container for new blog post
     <>
       <header className="flex justify-center">
-      <div className="text-center">
-        <h2 className="text-4xl inline border-b-4 border-pcCoral">Edit Post</h2>
-      </div>
+        <div className="text-center">
+          <h2 className="text-4xl inline border-b-4 border-pcCoral">Edit Post</h2>
+        </div>
       </header>
       <main className="flex justify-center">
         {/* Card */}

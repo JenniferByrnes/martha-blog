@@ -1,68 +1,40 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { getAuth } from 'firebase/auth'
-import { useAuthStatus } from '../hooks/useAuthStatus'
-import { useNavigate } from 'react-router-dom'
 import "./navbar.css";
 
 export default function Navbar() {
 
   const [nav, setNav] = useState(false)
   const userClick = () => setNav(!nav)
-  const navigate = useNavigate()
-  const auth = getAuth()
-  const { loggedIn } = useAuthStatus()
-
-  const logout = event => {
-    // TODO - this should cause a re-render of the NavBar
-    // event.preventDefault();
-    auth.signOut()
-    navigate('/')
-  }
 
   return (
     <header className="w-full bg-stone-200 text-black">
       {/* Container for Nav elements - title and nav */}
       <nav className="container flex justify-between md:items-center max-w-6xl mx-auto px-6 py-1 ">
         <>
-          {/* title - link to home */}
-          <NavLink to="/"
-            className="hover:text-pcCoral">
-            <h1>Martha's Musings</h1>
+          {/* title - link to home - formatted to to left of other nav items*/}
+          <NavLink
+            className="hover:text-pcCoral"
+            to="/"><h1>Martha's Musings</h1>
           </NavLink>
         </>
         <>
-          {/* Nav Menu */}
+          {/* right side of Nav Menu */}
           <ul className="hidden md:flex md:space-x-5 items-center justify-around py-2">
-            <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-              <NavLink to="/photos">Photos</NavLink>
-            </li>
-            <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-              <NavLink to="/blog">Blog</NavLink>
-            </li>
-            <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-              <NavLink to="/contact">Contact</NavLink>
-            </li>
-
-            {loggedIn ? (
-              <>
-                <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-                  <NavLink to="/profile">Admin</NavLink>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-                  <NavLink to="/login">Login</NavLink>
-                </li>
-                {/* <li className="hover:text-pcCoral hover:border-b hover:border-pcCoral">
-                  <NavLink to="/sign-up">Sign Up</NavLink>
-                </li> */}
-              </>)}
+            <NavLink
+              className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+              to="/photos">Photos</NavLink>
+            <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+              to="/blog" >Blog</NavLink>
+            <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+              to="/contact" >Contact</NavLink>
+            {/* PrivateRoute.jsx checks auth and sends user to login if needed. */}
+            <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+              to="/profile" >Admin</NavLink>
           </ul>
 
           {/* Nav Hamburger Menu */}
-          {/* This does animation! */}
+          {/* This does animation using the navbar.css file! */}
           <div onClick={userClick} className="md:hidden z-10 justify-items-end">
             {!nav ? <div className="md:hidden">
               <button
@@ -99,20 +71,9 @@ export default function Navbar() {
                 to="/blog" >Blog</NavLink>
               <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                 to="/contact" >Contact</NavLink>
-
-              {/* Logged in user sees Logout option, otherwise Login/Signin option */}
-              {loggedIn ? (
-                <li className="">
-                  <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
-                    to="/profile" >Admin</NavLink>
-                </li>
-              ) : (
-                <>
-                  <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
-                    to="/login" >Login</NavLink>
-                  {/* <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral" to="/sign-up" >Sign Up</NavLink> */}
-                </>
-              )}
+              {/* PrivateRoute.jsx checks auth and sends user to login if needed. */}
+              <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
+                to="/profile" >Admin</NavLink>
             </ul>
           </div>
         </>
