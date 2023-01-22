@@ -1,19 +1,16 @@
-
 import PhotoList from './PhotoList'
 
 function Gallery({ currentCategory }) {
   const {
-    name,
+    categoryName,
     description
   } = currentCategory;
 
-  
   return (
-    // render the photos for the catergory
+    // render the photos for the named category
     <section >
-      {/* <h1>{(name)}</h1> */}
       <p className='text-xl'>{description}</p>
-      <PhotoList category={currentCategory.name} key={currentCategory.name} />
+      <PhotoList category={categoryName} key={categoryName} />
     </section>
   )
 }
