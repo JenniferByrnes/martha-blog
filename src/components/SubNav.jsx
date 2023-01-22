@@ -30,16 +30,16 @@ export default function SubNav(props) {
       {/* map to get the categories for the navbar */}
       {categories.map((category) => (
         <button
-          className={`hover:text-pcCoral hover:border-b hover:border-pcCoral ${currentCategory.name === category.name && !contactSelected && `navActive`
+          className={`hover:text-pcCoral hover:border-b hover:border-pcCoral ${currentCategory.categoryName === category.categoryName && !contactSelected && `navActive`
             }`}
-          key={category.name}
+          key={category.categoryName}
         >
           <span onClick={() => {
             setCurrentCategory(category);
             setContactSelected(false);
           }}
           >
-            {capitalizeFirstLetter(category.name)}
+            {capitalizeFirstLetter(category.categoryName)}
           </span>
         </button>
       ))}
