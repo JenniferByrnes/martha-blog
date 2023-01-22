@@ -28,12 +28,11 @@ export default function Profile() {
   })
 
   const { username, email } = formData
-
   const navigate = useNavigate()
 
   const onLogout = () => {
     auth.signOut()
-    navigate(`/blog`)
+    navigate(`/`)
   }
 
   const onSubmit = async () => {
@@ -78,7 +77,6 @@ export default function Profile() {
 
       // Execute query
       const querySnap = await getDocs(q)
-
       const blogPosts = []
 
       querySnap.forEach((doc) => {
@@ -87,7 +85,6 @@ export default function Profile() {
           data: doc.data(),
         })
       })
-
       setBlogPosts(blogPosts)
       setLoading(false)
     }
@@ -98,11 +95,10 @@ export default function Profile() {
   const onDelete = async (blogPostId) => {
     if (window.confirm('Are you sure you want to delete?')) {
       await deleteDoc(doc(db, 'blog', blogPostId))
-      const updatedBlogPost = blogPosts.filter(
+      const updatedBlogPosts = blogPosts.filter(
         (blogPost) => blogPost.id !== blogPostId
       )
-      setBlogPosts(updatedBlogPost)
-      navigate(`/profile`)
+      setBlogPosts(updatedBlogPosts)
       toast.success('Successfully deleted post')
     }
   }
@@ -119,9 +115,7 @@ export default function Profile() {
       <div className="flex flex-col md:flex-row md:space-x-10" >
 
         {/* left column */}
-        <div
-          className="flex justify-center  "
-        >
+        <div className="flex justify-center  ">
           <div className="form-container ">
             <div className="form-inner-container ">
               <button type='button' className="form-button">
