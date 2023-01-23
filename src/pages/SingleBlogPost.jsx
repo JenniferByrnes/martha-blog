@@ -66,7 +66,7 @@ const SingleBlogPost = props => {
         {/* Card Body */}
         <div className="text-center">
           <p className="text-2xl py-3">{blogPost.blogPostTitle}</p>
-          <p>{blogPost.blogPostText}</p>
+          <p className="whitespace-pre-wrap">{blogPost.blogPostText}</p>
           <p className="text-start pt-3 italic">
             {blogPost.createdAt}
           </p>

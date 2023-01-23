@@ -9,44 +9,37 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
     // Fills all blog posts
     <>
       {/* Flexbox for each blogPost */}
-      <li className="flex justify-center ">
+      <li className="w-full md:max-w-full md:flex">
         {/* Card */}
         <div className="w-full m-1">
           {/* Card links to expanded blog post */}
-          <div className="group flex flex-col relative md:flex-row items-center shadow-2xl md:max-w-full rounded-2xl bg-white"
- 
+          <div className="md:h-48 group flex flex-col relative md:flex-row items-center shadow-2xl md:max-w-full rounded-2xl space-x-1 bg-white"
           >
             {/* Optional Image - hidden if non-existant */}
-            <NavLink to={`/single-blog-post/${id}`}
-            style={{
-              textDecoration: 'none'
-            }}>
-            <img className={blogPost.blogPostImage ? "object-cover md:w-48 md:h-48 mt-2 md:mt-0 rounded-t-lg md:rounded-none md:rounded-l-lg" : 'hidden'}
+            <img className={blogPost.blogPostImage ? "h-48 w-48 flex-none bg-cover md:rounded-l-2xl text-center overflow-hidden" : 'hidden'}
               alt="Inspiration"
               src={blogPost.blogPostImage}
-              width='96px'
-              height='96px'
             />
-            </NavLink>
             {/* Blog post text */}
             <NavLink to={`/single-blog-post/${id}`}
-            style={{
-              textDecoration: 'none'
-            }}>
-            <div className="group-hover:text-blue-500 p-2 md:p-6 flex flex-col items-center md:items-start">
-              {/* Blog post title */}
-              <h5 className="group-hover:text-blue-500 text-gray-900 text-xl font-medium mb-2">
-                {blogPost.blogPostTitle}
-              </h5>
-              {/* Blog post body */}
-              {/* TODO - get elipsis working for overflow text. */}
-              <p className="inline-block whitespace-pre-wrap group-hover:text-blue-500 text-gray-700 text-base max-h-36 text-ellipsis overflow-hidden ... mb-2 md:mb-4">{blogPost.blogPostText} ...</p>
+              style={{
+                textDecoration: 'none'
+              }}>
+              <div className="group-hover:text-blue-500 p-2 md:p-6 flex flex-col justify-between leading-normal">
+                {/* Blog post title */}
+                <h5 className="group-hover:text-blue-500 mt-5 text-gray-900 text-xl font-medium mb-2">
+                  {blogPost.blogPostTitle}
+                </h5>
+                {/* Blog post body */}
+                {/* TODO - get elipsis working for overflow text. 
+              Problem - whitespace-pre-wrap is needed to contain text in card and display line formatting, but truncate includes whitespace-nowrap (that part won't function to display ellipses) */}
+                <p className="inline-block whitespace-pre-wrap group-hover:text-blue-500 text-gray-700 text-base max-h-36 truncate mb-2 md:mb-4">{blogPost.blogPostText}</p>
 
-              {/* Blog post footer (TODO - this doesn't work - "key" problem */}
-              {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
+                {/* Blog post footer (TODO - this doesn't work - "key" problem */}
+                {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
               {blogPost.timestamp}
             </p> */}
-            </div>
+              </div>
             </NavLink>
             <div className='absolute top-0 right-2 z-20'>
               {onDelete && (
