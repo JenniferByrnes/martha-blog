@@ -90,10 +90,10 @@ const Blog = () => {
     // Page Container
     <section className="container mx-auto p-6 ">
       {/* Divide the container into columns */}
-      <div className="flex flex-col md:flex-row justify-between " >
+      <div className="flex flex-col lg:flex-row justify-between " >
 
         {/* left column */}
-        <div className="flex justify-center md:h-screen md:items-center shrink-0">
+        <div className="flex justify-center lg:h-screen lg:items-center shrink-0">
           {/* Card */}
           <div className="rounded-2xl shadow-lg max-w-sm bg-white">
             {/* Image */}
