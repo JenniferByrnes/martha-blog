@@ -4,6 +4,7 @@ import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
 import { ReactComponent as EditIcon } from '../assets/svg/editIcon.svg'
 
 const blogList = ({ blogPost, id, onEdit, onDelete }) => {
+  const blogDate = blogPost.timestamp.toDate().toDateString()
 
   return (
     // Fills all blog posts
@@ -35,10 +36,10 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
               Problem - whitespace-pre-wrap is needed to contain text in card and display line formatting, but truncate includes whitespace-nowrap (that part won't function to display ellipses) */}
                 <p className="inline-block whitespace-pre-wrap group-hover:text-blue-500 text-gray-700 text-base max-h-36 truncate mb-2 md:mb-4">{blogPost.blogPostText}</p>
 
-                {/* Blog post footer (TODO - this doesn't work - "key" problem */}
-                {/* <p className="group-hover:text-blue-500 text-gray-600 text-xs">
-              {blogPost.timestamp}
-            </p> */}
+                {/* Blog post footer TODO  */}
+                <p className="group-hover:text-blue-500 text-gray-600 italic text-xs">
+                  {blogDate}
+                </p>
               </div>
             </NavLink>
             <div className='absolute top-0 right-2 z-20'>
