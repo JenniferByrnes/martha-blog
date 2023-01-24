@@ -21,14 +21,13 @@ const Blog = () => {
         const blogPostsRef = collection(db, 'blog')
 
         // Get the total count for the LoadMore field
-        // ************************
         const countQuery = query(
           blogPostsRef,
         );
         const countDocs = await getCountFromServer(countQuery);
         setCount(countDocs.data().count);
 
-        // Create a query
+        // Create a query for all blog posts - limit to 10
         const q = query(
           blogPostsRef,
           orderBy('timestamp', 'desc'),
