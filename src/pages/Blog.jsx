@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { collection, getDocs, query, orderBy, limit, startAfter } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, limit, startAfter, getCountFromServer } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
@@ -11,12 +11,24 @@ const Blog = () => {
   const [blogPosts, setBlogPosts] = useState(null)
   const [loading, setLoading] = useState(true)
   const [lastFetchedBlogPost, setLastFetchedBlogPost] = useState(null)
+  const [count, setCount] = useState(null)
 
   useEffect(() => {
+    // This runs once to get the first ten Posts
     const fetchBlogPosts = async () => {
       try {
         // Get reference
         const blogPostsRef = collection(db, 'blog')
+
+        // Get the total count for the LoadMore field
+        // ************************
+        const countQuery = query(
+          blogPostsRef,
+        );
+        const countDocs = await getCountFromServer(countQuery);
+        setCount(countDocs.data().count);
+        console.log("Count=")
+        console.log(countDocs.data().count)
 
         // Create a query
         const q = query(
@@ -24,7 +36,7 @@ const Blog = () => {
           orderBy('timestamp', 'desc'),
           limit(10)
         )
- 
+
         // Execute query
         const querySnap = await getDocs(q)
 
@@ -32,6 +44,7 @@ const Blog = () => {
         setLastFetchedBlogPost(lastVisible)
 
         const blogPosts = []
+
 
         querySnap.forEach((doc) => {
           return blogPosts.push({
@@ -42,6 +55,8 @@ const Blog = () => {
 
         setBlogPosts(blogPosts)
         setLoading(false)
+
+
       } catch (error) {
         toast.error('Could not fetch blogPosts')
       }
@@ -50,12 +65,12 @@ const Blog = () => {
     fetchBlogPosts()
   }, [])
 
-  // Pagination / Load More
+  // Pagination / Load More - this gets all after the 1st 10
   const onFetchMoreBlogPosts = async () => {
     try {
       // Get reference
       const blogPostsRef = collection(db, 'blog')
-        
+
       // Create a query
       const q = query(
         blogPostsRef,
@@ -130,21 +145,21 @@ const Blog = () => {
                 <Spinner />
               ) : (
                 <ul>
-                {blogPosts.map((blogPost) => (
-                  <BlogList
-                    blogPost={blogPost.data}
-                    id={blogPost.id}
-                    key={blogPost.id}
-                  />
-                ))}
-              </ul>
+                  {blogPosts.map((blogPost) => (
+                    <BlogList
+                      blogPost={blogPost.data}
+                      id={blogPost.id}
+                      key={blogPost.id}
+                    />
+                  ))}
+                </ul>
               )}
             </div>
             <br />
             <br />
-            {/* TODO - should not show when there are few posts. */}
-            {lastFetchedBlogPost && (
-              <p className="" onClick={onFetchMoreBlogPosts}>Load More</p>
+            {/* Show Load More if there are more posts */}
+            {lastFetchedBlogPost && blogPosts?.length < count && (
+               <p className="" onClick={onFetchMoreBlogPosts}>Load More</p>
             )}
           </div>
         </div>
