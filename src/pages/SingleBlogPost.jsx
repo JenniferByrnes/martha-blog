@@ -7,6 +7,7 @@ import shareIcon from '../assets/svg/shareIcon.svg'
 
 const SingleBlogPost = props => {
   const [blogPost, setBlogPost] = useState(null)
+  const [blogTimeStamp, setBlogTimeStamp] = useState(null)
   const [loading, setLoading] = useState(true)
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
 
@@ -23,11 +24,14 @@ const SingleBlogPost = props => {
       // populate the data.
       if (docSnap.exists()) {
         setBlogPost(docSnap.data())
+        // TimeStamp needs to be converted to a date string
+        setBlogTimeStamp(docSnap.data().timestamp.toDate().toDateString())
         setLoading(false)
       }
     }
-
     fetchBlogPost()
+
+
   }, [navigate, params.blogPostId])
 
   if (loading) {
@@ -59,16 +63,16 @@ const SingleBlogPost = props => {
           <img
             alt="blog inspiration"
             src={blogPost.blogPostImage}
-            className="mx-auto bg-white shadow-lg "
+            className="mx-auto bg-white shadow-lg"
           />
           : <></>
         }
         {/* Card Body */}
-        <div className="text-center">
-          <p className="text-2xl py-3">{blogPost.blogPostTitle}</p>
+        <div className="p-2 md:p-6 space-y-2 md:space-y-4">
+          <p className="text-2xl font-bold pt-3">{blogPost.blogPostTitle}</p>
           <p className="whitespace-pre-wrap">{blogPost.blogPostText}</p>
-          <p className="text-start pt-3 italic">
-            {blogPost.createdAt}
+          <p className="italic">
+            {blogTimeStamp}
           </p>
         </div>
       </div>
