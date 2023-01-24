@@ -27,8 +27,6 @@ const Blog = () => {
         );
         const countDocs = await getCountFromServer(countQuery);
         setCount(countDocs.data().count);
-        console.log("Count=")
-        console.log(countDocs.data().count)
 
         // Create a query
         const q = query(
