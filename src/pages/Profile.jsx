@@ -12,6 +12,7 @@ import {
   limit,
   deleteDoc
 } from 'firebase/firestore'
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
@@ -41,10 +42,10 @@ export default function Profile() {
         (await updateProfile(auth.currentUser, {
           displayName: username
         }));
- 
+
       auth.currentUser.email !== email &&
         (await updateEmail(auth.currentUser, email));
- 
+
       const useRef = doc(db, 'users', auth.currentUser.uid);
       await updateDoc(useRef, {
         username,
@@ -55,7 +56,7 @@ export default function Profile() {
     }
     toast.success("Profile updated");
   };
- 
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -92,8 +93,29 @@ export default function Profile() {
     fetchBlogPosts()
   }, [])
 
-  const onDelete = async (blogPostId) => {
+  const onDelete = async (blogPostId, blogPostData) => {
     if (window.confirm('Are you sure you want to delete?')) {
+
+      // First, delete image from Storage
+      const storage = getStorage();
+
+      const urlToDelete = blogPostData.blogPostImage
+      // Pull the fileName from the URL
+      let fileName = urlToDelete.split('/').pop().split('#')[0].split('?')[0];
+      // Replace "%2F" in the URL with "/"
+      fileName = fileName.replace('%2F', '/');
+
+      const imageToDeleteRef = ref(storage, `${fileName}`);
+      //Delete the file
+      deleteObject(imageToDeleteRef)
+        // .then(() => {
+        //   toast.success('Images deleted');
+        // })
+        .catch((error) => {
+          toast.error('Failed to delete images');
+        });
+
+      // Delete the Firestore blogPost
       await deleteDoc(doc(db, 'blog', blogPostId))
       const updatedBlogPosts = blogPosts.filter(
         (blogPost) => blogPost.id !== blogPostId
@@ -167,7 +189,7 @@ export default function Profile() {
                   key={blogPost.id}
                   blogPost={blogPost.data}
                   id={blogPost.id}
-                  onDelete={() => onDelete(blogPost.id)}
+                  onDelete={() => onDelete(blogPost.id, blogPost.data)}
                   onEdit={() => onEdit(blogPost.id)}
                 />
               ))}
