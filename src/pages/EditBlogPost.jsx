@@ -159,39 +159,17 @@ const EditBlogPost = () => {
                     className="bg-pcGreen border-pcGreen border-4"
                     onChange={imageChange}
                   />
-                  {/* preview selected file */}
-
+                  {/* preview existing file - replace when new file is selected */}
                   {selectedImage ? (
-                                        <div className="flex flex-col mt-4 " >
-                                        <img
-                                          src={URL.createObjectURL(selectedImage)}
-                                          className="max-w-100 max-h-96"
-                                          alt="blog inspiration"
-                                        />
-                                      </div>
-                  ) : (
-                    <div className="flex flex-col mt-4 " >
-                    <img
-                      src={blogPostOldImage}
-                      className="mx-auto bg-white shadow-lg"
-                      alt="blog inspiration"
-                    />
-                  </div>
-                  )}
-
-
-
-     
-                  {/* {selectedImage && (
                     <div className="flex flex-col mt-4 " >
                       <img
+                      // Get the URL for the new image
                         src={URL.createObjectURL(selectedImage)}
                         className="max-w-100 max-h-96"
                         alt="blog inspiration"
                       />
                     </div>
-                  )}
-                  {blogPostOldImage && (
+                  ) : (
                     <div className="flex flex-col mt-4 " >
                       <img
                         src={blogPostOldImage}
@@ -199,7 +177,7 @@ const EditBlogPost = () => {
                         alt="blog inspiration"
                       />
                     </div>
-                  )} */}
+                  )}
 
                 </div>
               </div>
