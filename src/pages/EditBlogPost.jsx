@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
-import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getStorage, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 
 const EditBlogPost = () => {
@@ -102,6 +102,22 @@ const EditBlogPost = () => {
           reject(err)
         }
       );
+      const urlToDelete = blogPostOldImage
+      // Pull the fileName from the URL
+      let fileName = urlToDelete.split('/').pop().split('#')[0].split('?')[0];
+      // Replace "%2F" in the URL with "/"
+      fileName = fileName.replace('%2F', '/');
+
+      const imageToDeleteRef = ref(storage, `${fileName}`);
+      //Delete the file
+      deleteObject(imageToDeleteRef)
+        .then(() => {
+          toast.success('Old image deleted');
+        })
+        .catch((error) => {
+          toast.error('Failed to delete images');
+        });
+
     })
   };
 
@@ -161,19 +177,19 @@ const EditBlogPost = () => {
                   />
                   {/* preview existing file - replace when new file is selected */}
                   {selectedImage ? (
-                    <div className="flex flex-col mt-4 " >
+                    <div className="rounded-2xl shadow-lg max-w-3xl max-h-fit mx-auto" >
                       <img
-                      // Get the URL for the new image
+                        // Get the URL for the new image
                         src={URL.createObjectURL(selectedImage)}
-                        className="max-w-100 max-h-96"
+                        className="rounded-xl mx-auto object-fill ..."
                         alt="blog inspiration"
                       />
                     </div>
                   ) : (
-                    <div className="flex flex-col mt-4 " >
+                    <div className="rounded-2xl shadow-lg max-w-3xl max-h-fit mx-auto" >
                       <img
                         src={blogPostOldImage}
-                        className="mx-auto bg-white shadow-lg"
+                        className="rounded-xl  mx-auto object-fill ..."
                         alt="blog inspiration"
                       />
                     </div>
