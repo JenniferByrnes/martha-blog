@@ -151,6 +151,7 @@ const EditBlogPost = () => {
                 {/* image display and selection */}
                 <div className="container pt-5">
                   {/* type file allows user to upload file */}
+
                   <input
                     accept="image/*"
                     type="file"
@@ -159,15 +160,47 @@ const EditBlogPost = () => {
                     onChange={imageChange}
                   />
                   {/* preview selected file */}
-                  {selectedImage && (
+
+                  {selectedImage ? (
+                                        <div className="flex flex-col mt-4 " >
+                                        <img
+                                          src={URL.createObjectURL(selectedImage)}
+                                          className="max-w-100 max-h-96"
+                                          alt="blog inspiration"
+                                        />
+                                      </div>
+                  ) : (
+                    <div className="flex flex-col mt-4 " >
+                    <img
+                      src={blogPostOldImage}
+                      className="mx-auto bg-white shadow-lg"
+                      alt="blog inspiration"
+                    />
+                  </div>
+                  )}
+
+
+
+     
+                  {/* {selectedImage && (
                     <div className="flex flex-col mt-4 " >
                       <img
                         src={URL.createObjectURL(selectedImage)}
                         className="max-w-100 max-h-96"
-                        alt="Thumb"
+                        alt="blog inspiration"
                       />
                     </div>
                   )}
+                  {blogPostOldImage && (
+                    <div className="flex flex-col mt-4 " >
+                      <img
+                        src={blogPostOldImage}
+                        className="mx-auto bg-white shadow-lg"
+                        alt="blog inspiration"
+                      />
+                    </div>
+                  )} */}
+
                 </div>
               </div>
             </div>
