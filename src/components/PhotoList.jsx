@@ -61,15 +61,21 @@ const PhotoList = ({ category }) => {
       category: 'outside',
       description: 'Sitting area for viewing the sunrise.',
     },
+
     {
       name: 'Burrito',
       category: 'Back Patio',
       description: 'Enclosed patio - perfect for enjoying the outdoors.',
     },
     {
+      name: 'Outside Eating area',
+      category: 'outside',
+      description: 'See yourself with a sweet iced tea enjoying the view.',
+    },
+    {
       name: 'Outside',
       category: 'outside',
-      description: 'This is the view that brings you to this house.  See yourself with a sweet iced tea enjoying the view.',
+      description: 'This is the view that brings you to this house.',
     },
     {
       name: 'Main Bedroom - Bath',
