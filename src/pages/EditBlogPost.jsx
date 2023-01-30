@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
+import GetExistingImageRef from '../components/GetExistingImageRef'
 import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { ref, uploadBytes, getDownloadURL, getStorage, deleteObject } from "firebase/storage";
@@ -12,7 +13,7 @@ const EditBlogPost = () => {
 
   const [blogPostText, setBlogPostText] = useState('');
   const [blogPostTitle, setBlogPostTitle] = useState('');
-  const [blogPostOldImage, setBlogPostOldImage] = useState('');
+  const [blogPostOldImageURL, setBlogPostOldImageURL] = useState('');
   // const [blogPost, setBlogPost] = useState('');
   const [userRef, setUserRef] = useState('');
 
@@ -24,12 +25,7 @@ const EditBlogPost = () => {
   const isMounted = useRef(true)
 
   const [selectedImage, setSelectedImage] = useState();
-  // This function will be triggered when the 'file' field changes
-  const imageChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
-    }
-  };
+
 
   // Sets userRef to logged in User
   useEffect(() => {
@@ -58,7 +54,7 @@ const EditBlogPost = () => {
         // setBlogPost(docSnap.data())
         setBlogPostText(docSnap.data().blogPostText)
         setBlogPostTitle(docSnap.data().blogPostTitle)
-        setBlogPostOldImage(docSnap.data().blogPostImage)
+        setBlogPostOldImageURL(docSnap.data().blogPostImage)
         setLoading(false)
       } else {
         navigate('/')
@@ -80,12 +76,20 @@ const EditBlogPost = () => {
     setBlogPostTitle(event.target.value);
   };
 
+  // This function will be triggered when the 'file' field changes
+  const imageChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
   // Handle file upload event and update state
   // blogImages is the folder where the image will be stored.
   async function storeImage() {
     // Return old image if no new one is selected.
-    if (!selectedImage) return blogPostOldImage;
+    if (!selectedImage) return blogPostOldImageURL;
 
+    // Store the new image in Storage and get its URL
     return new Promise((resolve, reject) => {
       const storage = getStorage()
       // add characters to the filename to make it unique with v4
@@ -94,6 +98,7 @@ const EditBlogPost = () => {
       uploadBytes(imageRef, selectedImage).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
           resolve(url)
+          // Clear out the selectedImage value for a potential new one
           setSelectedImage()
         });
       },
@@ -102,24 +107,28 @@ const EditBlogPost = () => {
           reject(err)
         }
       );
-      const urlToDelete = blogPostOldImage
-      // Pull the fileName from the URL
-      let fileName = urlToDelete.split('/').pop().split('#')[0].split('?')[0];
-      // Replace "%2F" in the URL with "/"
-      fileName = fileName.replace('%2F', '/');
+      // Delete the old image from storage if there is one
+      async function deleteOldImage() {
+        if (blogPostOldImageURL) {
+          
+          //Delete the file
+          // console.log('before function call blogPostOldImageURL=')
+          // console.log(blogPostOldImageURL)
+          // This is still inconsistant - the function call fixed one await issue, but it's still inconistant. 
+          await deleteObject(GetExistingImageRef(blogPostOldImageURL, storage))
+            .then(() => {
+              console.log('EditBlogPost Old image deleted');
+            })
+            .catch((error) => {
+              console.error('EditBlogPost Failed to delete image', error);
+            });
+        }
+      }
 
-      const imageToDeleteRef = ref(storage, `${fileName}`);
-      //Delete the file
-      deleteObject(imageToDeleteRef)
-        .then(() => {
-          toast.success('Old image deleted');
-        })
-        .catch((error) => {
-          toast.error('Failed to delete images');
-        });
-
+      deleteOldImage();
     })
   };
+
 
   async function handleFormSubmit(e) {
     e.preventDefault()
@@ -188,7 +197,7 @@ const EditBlogPost = () => {
                   ) : (
                     <div className="rounded-2xl shadow-lg max-w-3xl max-h-fit mx-auto" >
                       <img
-                        src={blogPostOldImage}
+                        src={blogPostOldImageURL}
                         className="rounded-xl  mx-auto object-fill ..."
                         alt="blog inspiration"
                       />

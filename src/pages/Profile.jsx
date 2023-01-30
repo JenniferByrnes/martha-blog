@@ -9,14 +9,14 @@ import {
   query,
   where,
   orderBy,
-  limit,
   deleteDoc
 } from 'firebase/firestore'
-import { getStorage, ref, deleteObject } from 'firebase/storage';
+import { getStorage, deleteObject } from 'firebase/storage';
 
 import { db } from '../firebase.config'
 import { toast } from 'react-toastify'
 import BlogList from '../components/BlogList'
+import GetExistingImageRef from '../components/GetExistingImageRef'
 
 export default function Profile() {
   const auth = getAuth()
@@ -73,6 +73,7 @@ export default function Profile() {
       // Create a query
       const q = query(
         blogPostsRef,
+        where('userRef', '==', auth.currentUser.uid),
         orderBy('timestamp', 'desc')
       )
 
@@ -91,7 +92,7 @@ export default function Profile() {
     }
 
     fetchBlogPosts()
-  }, [])
+  }, [auth.currentUser.uid])
 
   const onDelete = async (blogPostId, blogPostData) => {
     if (window.confirm('Are you sure you want to delete?')) {
@@ -99,22 +100,25 @@ export default function Profile() {
       // First, delete image from Storage
       const storage = getStorage();
 
-      const urlToDelete = blogPostData.blogPostImage
-      // Pull the fileName from the URL
-      let fileName = urlToDelete.split('/').pop().split('#')[0].split('?')[0];
-      // Replace "%2F" in the URL with "/"
-      fileName = fileName.replace('%2F', '/');
+      async function deleteOldImage() {
+        const urlToDelete = blogPostData.blogPostImage
+        if (urlToDelete) {
 
-      const imageToDeleteRef = ref(storage, `${fileName}`);
-      //Delete the file
-      deleteObject(imageToDeleteRef)
-        // .then(() => {
-        //   toast.success('Images deleted');
-        // })
-        .catch((error) => {
-          toast.error('Failed to delete images');
-        });
+          console.log('urlToDelete=');
+          console.log(urlToDelete);
+          // TODO: Inconsistant in deleting images - the filenames look correct.
+          await deleteObject(GetExistingImageRef(urlToDelete, storage))
+            .then(() => {
+              console.log('Old image deleted');
+            })
+            .catch((error) => {
+              console.error('Failed to delete image', error);
+            });
 
+        }
+      }
+
+      deleteOldImage();
       // Delete the Firestore blogPost
       await deleteDoc(doc(db, 'blog', blogPostId))
       const updatedBlogPosts = blogPosts.filter(
