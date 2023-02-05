@@ -16,7 +16,7 @@ export default function Navbar() {
           {/* title - link to home - formatted to to left of other nav items*/}
           <NavLink
             className="hover:text-pcCoral"
-            to="/"><h1>Martha's Musings</h1>
+            to="/"><h1>Burfmusing</h1>
           </NavLink>
 
         </span>
