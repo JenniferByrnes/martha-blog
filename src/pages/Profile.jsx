@@ -132,7 +132,7 @@ export default function Profile() {
   const onEdit = (blogPostId) => navigate(`/edit-blog-post/${blogPostId}`)
 
   return (
-    <section className="mx-auto h-full w-screen bg-pcGreen">
+    <section className="mx-auto  min-h-full h-screen  w-screen bg-pcGreen">
       <div className="text-center p-6 ">
         <h2 className="text-4xl inline border-b-4 border-pcCoral">Admin Only</h2>
       </div>
