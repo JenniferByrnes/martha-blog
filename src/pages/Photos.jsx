@@ -26,7 +26,7 @@ export default function Photos() {
         contactSelected={contactSelected}
         setContactSelected={setContactSelected}
       ></SubNav>
-      <SocialIcon url="https://www.instagram.com/blueridge.hideaway/" bgColor="#546a7b" style={{ height: 25, width: 25 }} />
+      <SocialIcon url="https://www.instagram.com/blueridge.hideaway/" bgColor="#546a7b" style={{ height: 25, width: 25 }} className="ml-12"/>
       <main className="container mx-auto px-6" >
 
         {(currentCategory.categoryName === "all")
