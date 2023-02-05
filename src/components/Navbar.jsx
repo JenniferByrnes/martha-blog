@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import "./navbar.css";
+import { SocialIcon } from 'react-social-icons';
 
 export default function Navbar() {
 
@@ -11,19 +12,20 @@ export default function Navbar() {
     <header className="w-full bg-stone-200 text-black">
       {/* Container for Nav elements - title and nav */}
       <nav className="container flex justify-between md:items-center max-w-6xl mx-auto px-6 py-1 ">
-        <>
+        <span className="flex justify-between space-x-2 md:items-center">
           {/* title - link to home - formatted to to left of other nav items*/}
           <NavLink
             className="hover:text-pcCoral"
             to="/"><h1>Martha's Musings</h1>
           </NavLink>
-        </>
+          <SocialIcon url="https://www.instagram.com/burfordmartha/" bgColor="#546a7b" style={{ height: 25, width: 25 }} />
+        </span>
         <>
           {/* right side of Nav Menu */}
           <ul className="hidden md:flex md:space-x-5 items-center justify-around py-2">
             <NavLink
               className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
-              to="/photos">Photos</NavLink>
+              to="/airbnb">Airbnb</NavLink>
             <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
               to="/blog" >Blog</NavLink>
             <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
@@ -66,7 +68,7 @@ export default function Navbar() {
             }>
               <NavLink
                 className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
-                to="/photos">Photos</NavLink>
+                to="/airbnb">Airbnb</NavLink>
               <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
                 to="/blog" >Blog</NavLink>
               <NavLink className="hover:text-pcCoral hover:border-b hover:border-pcCoral"
