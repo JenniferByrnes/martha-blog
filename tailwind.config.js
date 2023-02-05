@@ -14,6 +14,7 @@ module.exports = {
         pcGreen:  '#dae8e3',
         pcPink:   '#d98a8a',
         pcCoral:  '#dc585d',
+        pcBlue:   '#546a7b',
         jbNeutral: '#e7e5e4'
       },
     },

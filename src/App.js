@@ -35,7 +35,7 @@ function App() {
           </Route>
           <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/photos' element={<Photos />} />
+          <Route path='/airbnb' element={<Photos />} />
           <Route path='/sign-up' element={<SignUp />} />
         </Routes>
       </Router>
