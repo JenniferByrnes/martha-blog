@@ -1,14 +1,17 @@
 import imageFun from "../assets/images/MBGirlBand.jpeg";
+import { SocialIcon } from 'react-social-icons';
 
 const Contact = () => {
   return (
     // Contact page container
     <section className="container w-full mx-auto text-stone-800 flex justify-center items-center md:p-4 ">
+
       {/* container to place form and text */}
       <div className="flex flex-col justify-center items-center px-6 pt-4 py-4 sm:pt-[30px] mx-auto ">
         {/* before the form header */}
-        <div className="text-center">
+        <div className="text-center space-x-2">
           <h2 className="text-4xl inline border-b-4 border-pcCoral">Contact</h2>
+          <SocialIcon url="https://www.instagram.com/burford469/" bgColor="#546a7b" style={{ height: 25, width: 25 }} className="mb-2"/>
           <p className="py-6">
             Please use this contact form to get in touch.
           </p>

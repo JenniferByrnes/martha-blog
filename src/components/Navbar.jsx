@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import "./navbar.css";
-import { SocialIcon } from 'react-social-icons';
+
 
 export default function Navbar() {
 
@@ -18,7 +18,7 @@ export default function Navbar() {
             className="hover:text-pcCoral"
             to="/"><h1>Martha's Musings</h1>
           </NavLink>
-          <SocialIcon url="https://www.instagram.com/burfordmartha/" bgColor="#546a7b" style={{ height: 25, width: 25 }} />
+
         </span>
         <>
           {/* right side of Nav Menu */}
