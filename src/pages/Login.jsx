@@ -96,8 +96,8 @@ export default function Login() {
                 <div className="flex items-center justify-evenly space-x-2">
 
                   <button type="submit" className="form-button">Submit</button>
-
-                  <button type="submit" className="form-button"><NavLink to="/sign-up">Sign Up?</NavLink></button>
+                  {/* This button was only for initial login - no other users need it */}
+                  {/* <button type="submit" className="form-button"><NavLink to="/sign-up">Sign Up?</NavLink></button> */}
                 </div>
                 {/* <div className='signInBar'>
                   <p className='signInText'>Sign In</p>

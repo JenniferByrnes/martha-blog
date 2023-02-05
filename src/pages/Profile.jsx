@@ -132,17 +132,17 @@ export default function Profile() {
   const onEdit = (blogPostId) => navigate(`/edit-blog-post/${blogPostId}`)
 
   return (
-    <section className="container mx-auto p-6 ">
-      <div className="text-center">
+    <section className="mx-auto h-full w-screen bg-pcGreen">
+      <div className="text-center p-6 ">
         <h2 className="text-4xl inline border-b-4 border-pcCoral">Admin Only</h2>
       </div>
       <br />
       {/* Divide the container into columns */}
-      <div className="flex flex-col md:flex-row md:space-x-10" >
+      <div className="flex flex-col md:flex-row md:space-x-10 p-6 " >
 
         {/* left column */}
         <div className="flex justify-center  ">
-          <div className="form-container ">
+          <div className="form-container h-fit">
             <div className="form-inner-container ">
               <button type='button' className="form-button">
                 <NavLink

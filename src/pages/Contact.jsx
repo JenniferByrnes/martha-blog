@@ -2,9 +2,10 @@ import imageFun from "../assets/images/MBGirlBand.jpeg";
 import { SocialIcon } from 'react-social-icons';
 
 const Contact = () => {
+
   return (
     // Contact page container
-    <section className="container w-full mx-auto text-stone-800 flex justify-center items-center md:p-4 ">
+    <section className="mx-auto h-full w-screen bg-pcGreen text-stone-800 flex justify-center items-center md:p-4 ">
 
       {/* container to place form and text */}
       <div className="flex flex-col justify-center items-center px-6 pt-4 py-4 sm:pt-[30px] mx-auto ">
@@ -33,6 +34,7 @@ const Contact = () => {
                 <input
                   type="text"
                   name="name"
+                  required
                   className="form-field focus: outline-pcGreen"
                 />
               </div>
@@ -44,6 +46,7 @@ const Contact = () => {
                 <input
                   type="email"
                   name="email"
+                  required
                   className="form-field focus: outline-pcGreen"
                 />
               </div>
@@ -55,6 +58,7 @@ const Contact = () => {
                 <textarea
                   name="message"
                   rows="8"
+                  required
                   className="form-field focus: outline-pcGreen"
                 />
               </div>
