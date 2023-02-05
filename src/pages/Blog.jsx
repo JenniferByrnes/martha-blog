@@ -100,7 +100,7 @@ const Blog = () => {
 
   return (
     // Page Container
-    <section className=" mx-auto h-full w-screen bg-pcGreen">
+    <section className=" mx-auto  min-h-full h-screen  w-screen bg-pcGreen">
       {/* Divide the container into columns */}
       <div className="flex flex-col p-6 lg:flex-row justify-between " >
 
