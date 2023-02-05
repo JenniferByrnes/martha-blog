@@ -156,7 +156,7 @@ const EditBlogPost = () => {
 
   return (
     // Container for new blog post
-    <>
+    <section className=" mx-auto min-h-screen h-full w-screen bg-pcGreen">
       <header className="flex justify-center">
         <div className="text-center">
           <h2 className="text-4xl inline border-b-4 border-pcCoral">Edit Post</h2>
@@ -247,7 +247,7 @@ const EditBlogPost = () => {
           </form>
         </div >
       </main>
-    </ >
+    </ section>
   );
 };
 

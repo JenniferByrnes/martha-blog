@@ -1,11 +1,11 @@
-import imageFun from "../assets/images/MBGirlBand.jpeg";
+import imageFun from "../assets/images/MBXmaxPuppies.jpeg";
 import { SocialIcon } from 'react-social-icons';
 
 const Contact = () => {
 
   return (
     // Contact page container
-    <section className="mx-auto  min-h-full h-screen  w-screen bg-pcGreen text-stone-800 flex justify-center items-center md:p-4 ">
+    <section className="mx-auto min-h-screen h-full w-screen bg-pcGreen text-stone-800 flex justify-center items-center md:p-4 ">
 
       {/* container to place form and text */}
       <div className="flex flex-col justify-center items-center px-6 pt-4 py-4 sm:pt-[30px] mx-auto ">

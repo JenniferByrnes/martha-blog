@@ -40,8 +40,8 @@ const SingleBlogPost = props => {
 
   return (
     // detail view of one post
-    <section className="container mx-auto p-6 ">
-      <div className="fixed flex cursor-pointer top-12 right-6 border-radius-50% z-2" onClick={() => {
+    <section className=" mx-auto min-h-screen h-full w-screen bg-pcGreen">
+      <div className="fixed flex p-6 cursor-pointer top-12 right-6 border-radius-50% z-2" onClick={() => {
         navigator.clipboard.writeText(window.location.href)
         setShareLinkCopied(true)
         setTimeout(() => {
