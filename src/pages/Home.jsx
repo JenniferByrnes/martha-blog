@@ -1,14 +1,13 @@
 import React from 'react';
 import image from '../assets/images/outside/3.webp'
 
-
 const Home = () => {
 
   return (
     // Page Container
-    <section className="container mx-auto p-6 bg-pcGreen" >
-      {/* Divide the container into columns */}
-      <div className="flex flex-col justify-center items-center" >
+    <section className=" mx-auto h-screen w-screen bg-pcGreen" >
+      {/* Divide the container into one flex column */}
+      <div className="flex flex-col  p-6 justify-center items-center" >
 
         <p className="text-4xl md:text-6xl text-center mb-2">
           Whatever you want here
