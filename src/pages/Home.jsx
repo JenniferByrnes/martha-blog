@@ -5,7 +5,7 @@ const Home = () => {
 
   return (
     // Page Container
-    <section className=" mx-auto min-h-full h-screen w-screen bg-pcGreen" >
+    <section className=" mx-auto min-h-screen h-full w-screen bg-pcGreen" >
       {/* Divide the container into one flex column */}
       <div className="flex flex-col p-6 lg:p-12 justify-center items-center" >
 

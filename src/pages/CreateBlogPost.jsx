@@ -107,7 +107,7 @@ const CreateBlogPost = () => {
 
   return (
     // Container for new blog post
-    <>
+    <section className=" mx-auto min-h-screen h-full w-screen bg-pcGreen">
       <header className="flex justify-center">
       <div className="text-center">
         <h2 className="text-4xl inline border-b-4 border-pcCoral">Create New Post</h2>
@@ -186,7 +186,7 @@ const CreateBlogPost = () => {
           </form>
         </div >
       </main>
-    </ >
+    </ section>
   );
 };
 
