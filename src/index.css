@@ -72,3 +72,11 @@ section {
 .form-button {
   @apply text-center w-full md:py-2 shadow-md shadow-pcGreen text-lg border-8 border-double border-pcGreen hover:bg-pcGreen hover:shadow-lg 
 }
+.mountain-footer {
+    aspect-ratio: 900/300;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url('./assets/svg/layered-waves-haikei.svg');
+}
