@@ -73,7 +73,7 @@ section {
   @apply text-center w-full md:py-2 shadow-md shadow-pcGreen text-lg border-8 border-double border-pcGreen hover:bg-pcGreen hover:shadow-lg 
 }
 .mountain-footer {
-    aspect-ratio: 900/300;
+    aspect-ratio: 900/100;
     width: 100%;
     background-repeat: no-repeat;
     background-position: center;
