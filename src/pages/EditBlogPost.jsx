@@ -133,7 +133,7 @@ const EditBlogPost = () => {
   async function handleFormSubmit(e) {
     e.preventDefault()
     try {
-      const timestamp = serverTimestamp()
+      const editedTimestamp = serverTimestamp()
       // Store the image and get the url
       const blogPostImage = await storeImage()
 
@@ -142,9 +142,9 @@ const EditBlogPost = () => {
       // Await is needed for the storeImage to complete.
       const docRef = doc(db, 'blog', params.blogPostId)
       if (blogPostImage) {
-        await updateDoc(docRef, { blogPostTitle, blogPostText, blogPostImage, userRef, timestamp })
+        await updateDoc(docRef, { blogPostTitle, blogPostText, blogPostImage, userRef, editedTimestamp })
       } else {
-        await updateDoc(docRef, { blogPostTitle, blogPostText, userRef, timestamp })
+        await updateDoc(docRef, { blogPostTitle, blogPostText, userRef, editedTimestamp })
       }
       setLoading(false)
       toast.success('BlogPost Updated')
