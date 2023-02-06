@@ -17,6 +17,9 @@ module.exports = {
         pcBlue:   '#546a7b',
         jbNeutral: '#e7e5e4'
       },
+      backgroundImage: {
+        'mountain-footer': "url('./assets/images/WindySlopesMtns.png')",
+      }
     },
   },
   plugins: [],
