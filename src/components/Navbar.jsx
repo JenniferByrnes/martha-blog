@@ -9,7 +9,7 @@ export default function Navbar() {
   const userClick = () => setNav(!nav)
 
   return (
-    <header className="w-full bg-stone-200 text-black">
+    <header className="w-full bg-stone-200 text-pcBlue">
       {/* Container for Nav elements - title and nav */}
       <nav className="container flex justify-between md:items-center max-w-6xl mx-auto px-6 py-1 ">
         <span className="flex justify-between space-x-2 md:items-center">
