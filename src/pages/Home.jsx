@@ -14,8 +14,8 @@ const Home = () => {
         </p>
           {/* Image */}
           <div >
-            <img className="rounded-xl object-fill h-96 ..."
-              alt="Sample"
+            <img className="rounded-xl object-fill h-48 md:h-96 ..."
+              alt="Martha"
               src={image}
             />
           </div>
@@ -25,7 +25,7 @@ const Home = () => {
         </p>
       </div>
       {/* svg image of mountains - in indes.css */}
-      <div className='absolute bottom-0 mountain-footer'>
+      <div className=' bg-mountain-footer absolute bottom-0 w-full bg-no-repeat bg-center bg-cover aspect-[3/2]  md:aspect-[3/1]'>
       </div>
     </section>
   );
