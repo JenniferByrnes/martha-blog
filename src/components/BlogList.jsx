@@ -1,10 +1,13 @@
-import React from 'react'
+
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
 import { ReactComponent as EditIcon } from '../assets/svg/editIcon.svg'
 
 const blogList = ({ blogPost, id, onEdit, onDelete }) => {
+
   const blogDate = blogPost.timestamp.toDate().toDateString()
+  // Convert edited timestamp in the return if it exists
+  const tempEditedTimestamp = blogPost.editedTimestamp
 
   return (
     // Fills all blog posts
@@ -39,9 +42,16 @@ const blogList = ({ blogPost, id, onEdit, onDelete }) => {
                 <p className="inline-block whitespace-pre-wrap group-hover:text-blue-500 text-gray-700 text-base max-h-12 md:max-h-24 truncate">{blogPost.blogPostText}</p>
 
                 {/* Blog post footer */}
-                <p className="md:absolute md:bottom-0 md:left-4 group-hover:text-blue-500 text-gray-600 italic text-xs">
+                <span className="md:absolute md:bottom-0 md:left-4 group-hover:text-blue-500 text-gray-600 italic text-xs">
                   {blogDate}
-                </p>
+                </span>
+
+                {/* Check to see if we have an edit Timestamp - if so, display it */}
+                {tempEditedTimestamp
+                  ?
+                  <span className="md:absolute md:bottom-0 md:left-40 group-hover:text-blue-500 text-gray-600 italic text-xs">   Edited: {tempEditedTimestamp.toDate().toDateString()}</span>
+                  : <></>
+                }
               </div>
             </NavLink>
             <div className='absolute top-0 right-2 z-20'>

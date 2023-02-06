@@ -32,7 +32,7 @@ const SingleBlogPost = props => {
         // If we have a Edited Timestamp, prepare to display it
         const tempEditedTimestamp = docSnap.data().editedTimestamp
         if (tempEditedTimestamp !== undefined && tempEditedTimestamp !== null) {
-          setBlogEditedTimeStamp(docSnap.data().editedTimestamp.toDate().toDateString())
+          setBlogEditedTimeStamp(tempEditedTimestamp.toDate().toDateString())
         }
         else {
           setBlogEditedTimeStamp("")
@@ -85,7 +85,6 @@ const SingleBlogPost = props => {
           <span className="italic">Posted: {blogTimeStamp}
           </span>
           {/* Check to see if we have an edit Timestamp - if so, display it */}
-
           {blogEditedTimeStamp
             ?
             <span className="italic whitespace-pre-wrap">   Edited: {blogEditedTimeStamp}</span>
