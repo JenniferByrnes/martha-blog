@@ -10,9 +10,10 @@ import { v4 } from "uuid";
 
 const CreateBlogPost = () => {
 
-  const [blogPostText, setBlogPostText] = useState('');
-  const [blogPostTitle, setBlogPostTitle] = useState('');
-  const [userRef, setUserRef] = useState('');
+  const [blogPostText, setBlogPostText] = useState('')
+  const [blogPostTitle, setBlogPostTitle] = useState('')
+  const [userRef, setUserRef] = useState('')
+  //const [blogPostTags, setBlogPostTags] = useState({})
 
   const [loading, setLoading] = useState(false)
 
@@ -20,7 +21,7 @@ const CreateBlogPost = () => {
   const navigate = useNavigate()
   const isMounted = useRef(true)
 
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState()
   // This function will be triggered when the 'file' field changes
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {

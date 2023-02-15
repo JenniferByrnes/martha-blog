@@ -22,6 +22,7 @@ export default function Profile() {
   const auth = getAuth()
   const [loading, setLoading] = useState(true)
   const [blogPosts, setBlogPosts] = useState(null)
+  const [blogTags, setBlogTags] = useState(null)
   const [changeDetails, setChangeDetails] = useState(false)
   const [formData, setFormData] = useState({
     username: auth.currentUser.displayName,
@@ -93,6 +94,36 @@ export default function Profile() {
 
     fetchBlogPosts()
   }, [auth.currentUser.uid])
+
+  useEffect(() => {
+    const fetchBlogTags = async () => {
+
+      // Get reference
+      const blogTagsRef = collection(db, 'tags')
+
+      // Create a query
+      const q = query(
+        blogTagsRef,
+      )
+
+      // Execute query
+      const querySnap = await getDocs(q)
+      const blogAvailableTags = []
+
+      querySnap.forEach((doc) => {
+        return blogAvailableTags.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
+      console.log("blogAvailableTagst=")
+      console.log(blogAvailableTags)
+      setBlogTags(blogAvailableTags)
+      setLoading(false)
+    }
+
+    fetchBlogTags()
+  }, [])
 
   const onDelete = async (blogPostId, blogPostData) => {
     if (window.confirm('Are you sure you want to delete?')) {

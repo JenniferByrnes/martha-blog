@@ -13,6 +13,8 @@ const Blog = () => {
   const [lastFetchedBlogPost, setLastFetchedBlogPost] = useState(null)
   const [count, setCount] = useState(null)
 
+  
+
   useEffect(() => {
     // This runs once to get the first ten Posts
     const fetchBlogPosts = async () => {
